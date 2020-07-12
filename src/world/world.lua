@@ -71,18 +71,20 @@ end
 -- Query - get items containing line segment
 --
 function World:querySegment(x1, y1, x2, y2, cb)
-	-- local cells   = self.grid:queryCellsOnSegment(x1, y1, x2, y2)
-	-- local visited = {}
+	local cells   = self.grid:queryCellsOnSegment(x1, y1, x2, y2)
+	local visited = {}
 
-	-- for __, cell in pairs(cells) do
-	-- 	for __, item in pairs(cell.items) do
-	-- 		if not visited[item.id] then
-	-- 			--TODO: 
+	for __, cell in pairs(cells) do
+		for __, item in pairs(cell.items) do
+			if not visited[item.id] then
+				if Segment(x1, y1, x2, y2):vsAABB(item:bounds()) then
+					cb(item)
+				end
 
-	-- 			visited[item.id] = true
-	-- 		end
-	-- 	end
-	-- end
+				visited[item.id] = true
+			end
+		end
+	end
 end
 
 -- query - get items within bounding box

@@ -22,6 +22,14 @@ function Grid:new(world, cellSize)
 	end
 end
 
+-- Reset
+--
+function Grid:reset()
+	for __, cell in pairs(self.cells) do
+		cell.items = {}
+	end
+end
+
 -- Tear down
 --
 function Grid:destroy()
@@ -91,31 +99,72 @@ function Grid:queryCellsInBounds(bounds)
 end
 
 -- Query - get cells on line segment
+-- 
+-- Credit:
+--   https://theshoemaker.de/2016/02/ray-casting-in-2d-grids/
 --
 function Grid:queryCellsOnSegment(x1, y1, x2, y2)
-	local cell   = self:queryCellAtPoint(x1, y1)
-	local x0, y0 = cell:position()
-	local ray    = Vec2(x2 - x1, y2 - y1)
-	local dtx    = ray.x == 0 and 1 or _.__abs(1 / ray.x)
-	local dty    = ray.y == 0 and 1 or _.__abs(1 / ray.y)
-	local stepX, stepY = 0, 0
-	local dix, diy
+	function init(origin, dir)
+        local size = self.cellSize
+        local tile = _.__floor(origin / size) + 1
+        local step, tMax, tDelta
 
-	if ray.x < 0 then
-		stepX = -1;
-	    dix   = (x1 - x0) * dtx;
-	else
-	    stepX = 1;
-	    dix   = (x0 + 1.0 - x1) * dtx;
+        if dir < 0 then
+            step = -1
+            tMax = (origin - size * (tile - 1)) / -dir
+        else
+            step = 1
+            tMax = dir ~= 0 and (size * tile - origin) / dir or _.__huge
+        end
+
+        tDelta = size / dir * step
+
+        return tile, step, tMax, tDelta
+    end
+
+    --
+    local cells = {}
+    local cell1 = self:queryCellAtPoint(x1, y1)
+    local cellN = self:queryCellAtPoint(x2, y2)
+
+    -- add initial cell..
+    table.insert(cells, cell1)
+
+    if cell1.col ~= cellN.col or cell1.row ~= cellN.row then
+		local ray           = Vec2(x2 - x1, y2 - y1)
+		local x, sx, tx, dx = init(x1, ray.x)
+		local y, sy, ty, dy = init(y1, ray.y)
+
+		while _.__abs(x - cellN.col) + _.__abs(y - cellN.row) > 0 do
+	        local t    = _.__min(tx, ty)
+	        local mark = Vec2(x1 + ray.x * t, y1 + ray.y * t)
+
+	        -- add cell
+	        table.insert(cells, cell)
+
+	        if tx < ty then
+				tx = tx + dx
+				x  = x  + sx
+				--
+				local leftCell  = self:queryCellAtPoint(mark.x-1, mark.y)
+				local rightCell = self:queryCellAtPoint(mark.x+1, mark.y)
+
+				table.insert(cells, leftCell)
+				table.insert(cells, rightCell)
+			else
+				ty = ty + dy
+				y  = y  + sy
+				--
+				local topCell    = self:queryCellAtPoint(mark.x, mark.y-1)
+				local bottomCell = self:queryCellAtPoint(mark.x, mark.y+1)
+
+				table.insert(cells, topCell)
+				table.insert(cells, bottomCell)
+	        end
+	    end
 	end
 
-	if ray.y < 0 then
-    	stepY = -1;
-        diy   = (y1 - y0) * dty;
-    else
-        stepY = 1;
-        diy   = (y0 + 1.0 - y1) * dty;
-    end
+	return cells
 end
 
 ---- ---- ---- ----

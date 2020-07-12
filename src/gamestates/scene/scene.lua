@@ -30,7 +30,7 @@ function Scene:enter(from, ...)
 
 	self.world = World(self)
 	self.world:addLayer(self.map.layers['Bounds'])
-	self.world:addLayer(self.map.layers['Slopes'])
+	-- self.world:addLayer(self.map.layers['Slopes'])
 	
 	-- spawn player
 	self.player = Entities['player']({
@@ -121,16 +121,18 @@ function Scene:loadMap()
 	--
 	self.background = lg.newCanvas(self.width, self.height)
     lg.setCanvas(self.background)
-	    -- TODO: draw tile layers
-	    
-	    -- self.map:drawTileLayer('Platform')
-	    -- self.map:drawTileLayer('Decoration')
+	    self.map:drawTileLayer('Background')
+	    self.map:drawTileLayer('Decoratives (B1)')
+	    self.map:drawTileLayer('Decoratives (B2)')
+	    self.map:drawTileLayer('Decoratives (B3)')
+	    self.map:drawTileLayer('Platform')
     lg.setCanvas()
 
     --
     self.foreground = lg.newCanvas(self.width, self.height)
     lg.setCanvas(self.foreground)
-    	-- TODO: draw tile layers
+    	self.map:drawTileLayer('Decoratives (F1)')
+	    self.map:drawTileLayer('Decoratives (F2)')
     lg.setCanvas()
 end
 

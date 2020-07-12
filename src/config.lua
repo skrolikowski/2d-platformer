@@ -5,7 +5,7 @@ Config = {
 	width  = lg.getWidth(),
 	height = lg.getHeight(),
 	debug  = true,
-	camera = { scale = 2  },
+	camera = { scale = 3  },
 	world  = {
 		tileSize = 16,
 		cellSize = 32,

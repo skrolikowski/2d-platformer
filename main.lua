@@ -30,8 +30,57 @@ require 'src.toolbox'
 require 'src.entities'
 require 'src.world'
 
+--[[
+local p1, p2, grid, ray, marks
 
-local background, foreground
+function love.load()
+    p1    = Vec2()
+    p2    = Vec2(lm.getPosition())
+    marks = {}
+    grid  = Grid({
+        width = lg.getWidth(),
+        height = lg.getHeight()
+    }, 64)
+end
+
+function love.update(dt)
+    grid:reset()
+    marks = {}
+    ray   = p2 - p1
+
+    --
+    local cells = grid:queryCellsOnSegment(p1.x, p1.y, p2.x, p2.y)
+
+    for __, cell in pairs(cells) do
+        cell.items['--'] = { '--' }
+    end
+end
+
+function love.draw()
+    grid:draw()
+
+    lg.setColor(1,0,0,1)
+    lg.line(p1.x, p1.y, p2.x, p2.y)
+
+    for __, mark in pairs(marks) do
+        lg.circle('line', mark.x, mark.y, 3)
+    end
+end
+
+function love.keypressed(key)
+    if key == 'escape' then
+        love.event.quit()
+    end
+end
+
+function love.mousepressed(x, y)
+    p1 = Vec2(x, y)
+end
+
+function love.mousemoved(x, y)
+    p2 = Vec2(x, y)
+end
+]]--
 
 -- load
 --
@@ -42,9 +91,9 @@ function love.load()
     --
     Gamestate.registerEvents()
     Gamestate.switch(Gamestates['scene'], {
-        map = 'res/maps/AA.lua',
-        row = 46,
-        col = 20
+        map = 'res/maps/Cemetary/001.lua',
+        row = 26,
+        col = 5
     })
 end
 
@@ -111,27 +160,29 @@ function love.mousemoved()
     _:dispatch('mouseMove')
 end
 
--- -- Controls - Button Pressed
--- function love.gamepadaxis(joystick, axis, value)
--- 	print('gamepadaxis', joystick, axis, value)
--- 	--
--- 	-- triggers
--- 	-- if axis == 'triggerleft'  and value == 1 then  end
--- 	-- if axis == 'triggerleft'  and value == 0 then  end
--- 	-- if axis == 'triggerright' and value == 1 then  end
--- 	-- if axis == 'triggerright' and value == 0 then  end
--- end
+--[[
+-- Controls - Button Pressed
+function love.gamepadaxis(joystick, axis, value)
+	print('gamepadaxis', joystick, axis, value)
+	--
+	-- triggers
+	-- if axis == 'triggerleft'  and value == 1 then  end
+	-- if axis == 'triggerleft'  and value == 0 then  end
+	-- if axis == 'triggerright' and value == 1 then  end
+	-- if axis == 'triggerright' and value == 0 then  end
+end
 
--- -- Controls - Button Pressed
--- function love.gamepadpressed(joystick, button)
--- 	print('gamepadpressed', joystick, button)
--- 	_Buttons[button] = 0
--- 	player:onButtonPressed(button)
--- end
+-- Controls - Button Pressed
+function love.gamepadpressed(joystick, button)
+	print('gamepadpressed', joystick, button)
+	_Buttons[button] = 0
+	player:onButtonPressed(button)
+end
 
--- -- Controls - Button Released
--- function love.gamepadreleased(joystick, button)
---     print('gamepadreleased', joystick, button)
---     _Buttons[button] = nil
---     player:onButtonReleased(button)
--- end
+-- Controls - Button Released
+function love.gamepadreleased(joystick, button)
+    print('gamepadreleased', joystick, button)
+    _Buttons[button] = nil
+    player:onButtonReleased(button)
+end
+]]--

@@ -1,0 +1,74 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "exportAsImage.drawTileGrid": false,
+    "exportAsImage.includeBackgroundColor": false,
+    "exportAsImage.useCurrentScale": true,
+    "exportAsImage.visibleLayersOnly": true,
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "001.tmx": {
+            "scale": 1,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 316,
+                "y": 314
+            }
+        },
+        "C:/Users/Shane/Dropbox/tmp/platformer-2020/KingdomForest/001.tmx": {
+            "scale": 1.2914062499999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 320.5807622504538,
+                "y": 320.5807622504538
+            }
+        },
+        "C:/Users/Shane/Dropbox/tmp/platformer-2020/KingdomForest/tilesets/KingdomForest.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Shane/Dropbox/tmp/platformer-2020/KingdomForest/tilesets/KingdomForestProps.tsx": {
+            "scaleInDock": 1
+        },
+        "Collision.tmx": {
+            "scale": 2.4598214285714284,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 152.04355716878405,
+                "y": 160.1742286751361
+            }
+        }
+    },
+    "map.fixedSize": true,
+    "map.height": 20,
+    "map.lastUsedExportFilter": "Lua files (*.lua)",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": 3,
+    "map.orientation": 1,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 20,
+    "openFiles": [
+    ],
+    "project": "",
+    "property.type": "bool",
+    "recentFiles": [
+        "C:/Users/Shane/Dropbox/tmp/platformer-2020/KingdomForest/001.tmx",
+        "Collision.tmx"
+    ],
+    "tileset.embedInMap": false,
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.transparentColor": "#ff00ff",
+    "tileset.type": 0,
+    "tileset.useTransparentColor": false
+}

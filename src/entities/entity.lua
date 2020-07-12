@@ -75,10 +75,10 @@ end
 -- Draw
 --
 function Entity:draw()
-	local r, g, b = unpack(self.color)
+	-- local r, g, b = unpack(self.color)
 
-	lg.setColor(r, g, b, 0.33)
-	lg.rectangle('fill', self:container())
+	-- lg.setColor(r, g, b, 0.33)
+	-- lg.rectangle('fill', self:container())
 end
 
 ---- ---- ---- ----

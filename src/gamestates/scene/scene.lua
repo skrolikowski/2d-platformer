@@ -80,9 +80,9 @@ function Scene:update(dt)
 	self.world:queryWorld(function(item)
 		--
 		-- remove requested items
-		if item.remove then
+		if item._remove then
 			self:remove(item)
-		elseif item.bodyType == 'kinematic' then
+		elseif item._bodyType == 'kinematic' then
 			item:update(dt)
 		end
 	end)

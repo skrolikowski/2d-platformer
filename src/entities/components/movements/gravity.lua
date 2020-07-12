@@ -8,6 +8,9 @@ local Gravity = Base:extend()
 -- New..
 --
 function Gravity:new(height, dt)
+	height = height or Config.world.tileSize * 6
+	dt     = dt or 0.4
+	--
 	self._gravity = 2 * height / dt^2
 end
 

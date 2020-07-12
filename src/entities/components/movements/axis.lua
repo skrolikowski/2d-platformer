@@ -1,27 +1,27 @@
--- Movement Component
+-- Axis Component
 --
 
-local Base     = require 'src.entities.components.component'
-local Movement = Base:extend()
+local Base = require 'src.entities.components.component'
+local Axis = Base:extend()
 
 
 
 -- New..
 --
-function Movement:new(speed, speedMax)
+function Axis:new(speed, speedMax)
 	--
 	-- properties
+	self._axis  = Vec2()
 	self._vel   = Vec2()
 	self._force = Vec2()
-	self._axis  = Vec2()
 
-	self._speed    = speed    or 800
+	self._speed    = speed    or 500
 	self._speedMax = speedMax or 400
 end
 
 -- Apply x-force by [Axis x Speed]
 --
-function Movement:xForce(value)
+function Axis:xForce(value)
 	--
 	-- Cut vel.x if no direction provided
 	if value == 0 then
@@ -57,18 +57,17 @@ end
 
 -- Update
 --
-function Movement:update(dt)
+function Axis:update(dt)
 	if self.host:onLedge() then
 		return
 	end
-	--
 
-	local world   = self.host.world
+	--
 	local initVel = self._vel:copy()
-
 	--
-	-- apply movement force (x-force)
+	-- apply movement force
 	self:xForce(self._axis.x)
+	-- self:yForce(self._axis.y)
 
 	-- set velocity
 	self._vel = self._vel + self._force * dt
@@ -79,14 +78,14 @@ function Movement:update(dt)
 	self._vel.y = _:clamp(self._vel.y, -800, 800)
 
 	local dp      = (initVel + self._vel) * dt * 0.5
-	local nextPos = self.host.pos + dp
+	local nextPos = self.host._pos + dp
 
-	world:move(self.host, nextPos)
+	self.host:onMove(nextPos)
 end
 
 ---- ---- ---- ----
 
-function Movement:onAxisChange(value)
+function Axis:onAxisChange(value)
 	self:axis(value)
 end
 
@@ -94,7 +93,7 @@ end
 
 -- Get/set movement axis
 --
-function Movement:axis(value)
+function Axis:axis(value)
 	if value == nil then
 		return self._axis
 	end
@@ -107,7 +106,7 @@ end
 
 --
 --
-function Movement:ax(value)
+function Axis:ax(value)
 	if value == nil then
 		return self._axis.x
 	end
@@ -117,7 +116,7 @@ end
 
 --
 --
-function Movement:ay(value)
+function Axis:ay(value)
 	if value == nil then
 		return self._axis.y
 	end
@@ -128,7 +127,7 @@ end
 
 -- Get/set velocity
 --
-function Movement:vel(value)
+function Axis:vel(value)
 	if value == nil then
 		return self._vel
 	end
@@ -141,7 +140,7 @@ end
 
 --
 --
-function Movement:vx(value)
+function Axis:vx(value)
 	if value == nil then
 		return self._vel.x
 	end
@@ -151,7 +150,7 @@ end
 
 --
 --
-function Movement:vy(value)
+function Axis:vy(value)
 	if value == nil then
 		return self._vel.y
 	end
@@ -162,7 +161,7 @@ end
 
 -- Get/set force
 --
-function Movement:force(value)
+function Axis:force(value)
 	if value == nil then
 		return self._force
 	end
@@ -175,7 +174,7 @@ end
 
 --
 --
-function Movement:fx(value)
+function Axis:fx(value)
 	if value == nil then
 		return self._force.x
 	end
@@ -185,7 +184,7 @@ end
 
 --
 --
-function Movement:fy(value)
+function Axis:fy(value)
 	if value == nil then
 		return self._force.y
 	end
@@ -195,4 +194,4 @@ end
 
 
 
-return Movement
+return Axis

@@ -2,14 +2,19 @@
 --
 
 Components = {
-	contact   = require 'src.entities.components.contact',
-	jump      = require 'src.entities.components.jump',
-	gravity   = require 'src.entities.components.gravity',
-	movement  = require 'src.entities.components.movement',
 	transform = require 'src.entities.components.transform',
+	contact   = require 'src.entities.components.contact',
+	-- movement
+	axis    = require 'src.entities.components.movements.axis',
+	crouch  = require 'src.entities.components.movements.crouch',
+	jump    = require 'src.entities.components.movements.jump',
+	gravity = require 'src.entities.components.movements.gravity',
+	-- behaviors
+	state = require 'src.entities.components.behaviors.state',
 }
 
 Entities = {
+	enemy  = require 'src.entities.enemy',
 	player = require 'src.entities.player',
 
 	-- passive

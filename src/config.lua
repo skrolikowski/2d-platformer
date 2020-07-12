@@ -30,5 +30,14 @@ Config = {
 			xp = { _:color('blue-300') },
 		}
 	},
+	ui = {
+        font = {
+            xs = love.graphics.newFont('res/ui/fonts/Fool.ttf', 10),
+            sm = love.graphics.newFont('res/ui/fonts/Fool.ttf', 12),
+            md = love.graphics.newFont('res/ui/fonts/Fool.ttf', 24),
+            lg = love.graphics.newFont('res/ui/fonts/Fool.ttf', 32),
+            xl = love.graphics.newFont('res/ui/fonts/Fool.ttf', 48)
+        }
+	},
 
 }

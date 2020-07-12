@@ -10,15 +10,18 @@ function Entity:new(data)
 
 	--
 	-- properties
-	self.pos      = Vec2(data.x, data.y)
-	self.width    = data.width
-	self.height   = data.height
-	self.bodyType = data.bodyType or 'static'
-	self.color    = data.color or { _:color('white') }
+	self._pos      = Vec2(data.x, data.y)
+	self._width    = data.width
+	self._height   = data.height
+	self._bodyType = data.bodyType or 'static'
+	self._color    = data.color or { _:color('white') }
 
 	-- scaling
-	self.sx = data.sx or 1
-	self.sy = data.sx or 1
+	self._sx = data.sx or 1
+	self._sy = data.sx or 1
+
+	-- flags
+	self._remove = false
 end
 
 -- Teardown
@@ -30,20 +33,20 @@ end
 -- Center position
 --
 function Entity:center()
-	return self.pos:unpack()
+	return self._pos:unpack()
 end
 
 -- Width/height
 --
 function Entity:dimensions()
-	return self.width  * self.sx,
-	       self.height * self.sy
+	return self._width  * self._sx,
+	       self._height * self._sy
 end
 
 -- Bounding box
 --
 function Entity:bounds()
-	if self.bodyType == 'static' and self._bounds then
+	if self._bodyType == 'static' and self._bounds then
 		return self._bounds
 	end
 
@@ -83,24 +86,64 @@ end
 
 ---- ---- ---- ----
 
+-- Event: onMove
 --
+function Entity:onMove(nextPos)
+	self.world:move(self, nextPos)
+end
+
+-- Event: onUpdate
+function Entity:onUpdate(data)
+	local cx = data.x or self._pos.x
+	local cy = data.y or self._pos.y
+	local w  = data.w or self._width
+	local h  = data.h or self._height
+	--
+	self.world:update(self, cx, cy, w, h)
+end
+
+---- ---- ---- ----
+
+-- Get/set x-position
 --
 function Entity:px(value)
 	if value == nil then
-		return self.pos.x
+		return self._pos.x
 	end
 
-	self.pos.x = value
+	self._pos.x = value
 end
 
---
+-- Get/set y-position
 --
 function Entity:py(value)
 	if value == nil then
-		return self.pos.y
+		return self._pos.y
 	end
 
-	self.pos.y = value
+	self._pos.y = value
+end
+
+-- Get/set width
+--
+function Entity:width(value)
+	if value == nil then
+		return self._width * self._sx
+	end
+
+	self._width = value
+	self:onUpdate({ w = value })
+end
+
+-- Get/set height
+--
+function Entity:height(value)
+	if value == nil then
+		return self._height * self._sy
+	end
+
+	self._height = value
+	self:onUpdate({ h = value })
 end
 
 return Entity

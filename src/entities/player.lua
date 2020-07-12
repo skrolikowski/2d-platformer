@@ -2,12 +2,14 @@
 --
 
 local Contact  = Components['contact']()
-local Jump     = Components['jump'](Config.world.tileSize * 6, 0.4)
-local Gravity  = Components['gravity'](Config.world.tileSize * 6, 0.4)
-local Movement = Components['movement'](500, 300)
+local Crouch   = Components['crouch']()
+local Jump     = Components['jump']()
+local Gravity  = Components['gravity']()
+local Axis     = Components['axis'](500, 300)
+local State    = Components['state']()
 
 local Base   = require 'src.entities.entity'
-local Player = Base:extend(Contact, Jump, Gravity, Movement)
+local Player = Base:extend(Contact, Crouch, Jump, Gravity, Axis, State)
 
 -- New Player Unit
 --
@@ -19,9 +21,11 @@ function Player:new(data)
 
 	-- register
 	Gamestate.current():registerControls({
-		onJump  = function(...) self:onRequestJump(...)  end,
-		offJump = function(...) self:offRequestJump(...) end,
-		axis    = function(...) self:onAxisChange(...)   end,
+		onCrouch  = function(...) self:onRequestCrouch(...)  end,
+		offCrouch = function(...) self:offRequestCrouch(...) end,
+		onJump    = function(...) self:onRequestJump(...)    end,
+		offJump   = function(...) self:offRequestJump(...)   end,
+		axis      = function(...) self:onAxisChange(...)     end,
 	})
 end
 

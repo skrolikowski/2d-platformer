@@ -202,7 +202,7 @@ end
 -- update item pos/dimensions in world
 --
 function World:update(item, cx, cy, w, h)
-	if item.pos.x ~= cx or item.pos.y ~= cy then
+	if item:px() ~= cx or item:py() ~= cy then
 		--
 		-- remove
 		self:remove(item)
@@ -210,10 +210,10 @@ function World:update(item, cx, cy, w, h)
 		local _w, _h = item:dimensions()
 		--
 		-- update position/dimensions
-		item.pos.x  = cx
-		item.pos.y  = cy
-		item.width  = w or _w
-		item.height = h or _h
+		item._pos.x  = cx
+		item._pos.y  = cy
+		item._width  = w or _w
+		item._height = h or _h
 
 		-- re-add
 		self:add(item)

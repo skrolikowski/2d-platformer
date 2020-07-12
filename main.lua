@@ -92,7 +92,7 @@ function love.load()
     Gamestate.registerEvents()
     Gamestate.switch(Gamestates['scene'], {
         map = 'res/maps/Cemetary/001.lua',
-        row = 26,
+        row = 28,
         col = 5
     })
 end

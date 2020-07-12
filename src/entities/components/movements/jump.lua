@@ -8,6 +8,8 @@ local Jump = Base:extend()
 -- New..
 --
 function Jump:new(height, dt)
+	height = height or Config.world.tileSize * 6
+	dt     = dt or 0.4
 	--
 	-- properties
 	self._jumpCount  = { num = 0, max = 1}
@@ -95,15 +97,6 @@ function Jump:performJump()
 		self.host:vy(-self._jumpSpeed * 0.8)
 		self.host:onLedge(false)
 	end
-end
-
----- ---- ---- ----
-
--- Check if jump requested
---
-function Jump:wantsJump()
-	-- print(self._tJump, self._tGround)
-	return self._tJump > 0-- and self._tGround < 0.25
 end
 
 return Jump

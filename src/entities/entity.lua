@@ -87,19 +87,25 @@ end
 ---- ---- ---- ----
 
 -- Event: onMove
+-- Move entity in World.
 --
 function Entity:onMove(nextPos)
 	self.world:move(self, nextPos)
 end
 
 -- Event: onUpdate
+-- Update entity pos/dimensions in World.
+--
 function Entity:onUpdate(data)
-	local cx = data.x or self._pos.x
-	local cy = data.y or self._pos.y
-	local w  = data.w or self._width
-	local h  = data.h or self._height
+	self._pos.x  = data.x or self._pos.x
+	self._pos.y  = data.y or self._pos.y
+	self._width  = data.w or self._width
+	self._height = data.h or self._height
 	--
-	self.world:update(self, cx, cy, w, h)
+	self.world:update(self,
+		self._pos.x, self._pos.y,
+		self._width, self._height
+	)
 end
 
 ---- ---- ---- ----
@@ -111,7 +117,7 @@ function Entity:px(value)
 		return self._pos.x
 	end
 
-	self._pos.x = value
+	self:onUpdate({ x = value })
 end
 
 -- Get/set y-position
@@ -121,7 +127,27 @@ function Entity:py(value)
 		return self._pos.y
 	end
 
-	self._pos.y = value
+	self:onUpdate({ y = value })
+end
+
+-- Get/set x-scale
+--
+function Entity:sx(value)
+	if value == nil then
+		return self._sx
+	end
+
+	self._sx = value
+end
+
+-- Get/set y-scale
+--
+function Entity:sy(value)
+	if value == nil then
+		return self._sy
+	end
+
+	self._sy = value
 end
 
 -- Get/set width
@@ -131,7 +157,6 @@ function Entity:width(value)
 		return self._width * self._sx
 	end
 
-	self._width = value
 	self:onUpdate({ w = value })
 end
 
@@ -142,7 +167,6 @@ function Entity:height(value)
 		return self._height * self._sy
 	end
 
-	self._height = value
 	self:onUpdate({ h = value })
 end
 

@@ -17,10 +17,10 @@ end
 --
 function State:update(dt)
 	if self.host:onGround() then
-		if _.__abs(self.host:vx()) > 1 then
-			self.host:onSetState('walk')
-		elseif self.host:isCrouching() then
+		if self.host:isCrouching() then
 			self.host:onSetState('crouch')
+		elseif _.__abs(self.host:vx()) > 1 then
+			self.host:onSetState('walk')
 		else
 			self.host:onSetState('idle')
 		end
@@ -38,7 +38,7 @@ end
 function State:draw()
     local cx, cy = self.host:center()
 	local w, h   = self._state.text:getDimensions()
-	local sx, sy = self.host.sx, self.host.sy
+	local sx, sy = self.host:sx(), self.host:sy()
 	local ox, oy = 0, Config.world.tileSize * 1.5
 
 	lg.setColor(Config.color.white)

@@ -5,10 +5,14 @@ Util = {}
 -- vendor
 pprint = require 'vendor.pprint.pprint'
 
--- Math
+-- math
 AABB    = require 'src.toolbox.math.aabb'
 Vec2    = require 'src.toolbox.math.vec2'
 Segment = require 'src.toolbox.math.segment'
+
+-- graphics
+Animator    = require 'src.toolbox.graphics.animator'
+Spritesheet = require 'src.toolbox.graphics.spritesheet'
 
 -- quick lua implementation of "random" UUID
 -- https://gist.github.com/jrus/3197011

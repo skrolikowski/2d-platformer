@@ -9,17 +9,28 @@ local Crouch = Base:extend()
 function Crouch:__new(data)
 	Base.__new(self, data)
 	--
-	self._initHeight = self.host:height()
+	self._iHeight = self.host:height()
+	self._cHeight = self._iHeight / 2
+	self._cOffset = (self._iHeight - self._cHeight) / 2
 end
 
 -- Update..
 --
 function Crouch:update(dt)
 	if self._isCrouching then
-		self.host:height(self._initHeight / 2)
+		if self.host:height() ~= self._cHeight then
+			self.host:onUpdate({
+				y = self.host:py() + self._cOffset,
+				h = self._cHeight
+			})
+		end
 	else
-		if self.host:height() ~= self._initHeight then
-			self.host:height(self._initHeight)
+		if self.host:height() ~= self._iHeight then
+		-- adjust back to init height
+			self.host:onUpdate({
+				y = self.host:py() - self._cOffset,
+				h = self._iHeight
+			})
 		end
 	end
 end
@@ -36,6 +47,12 @@ end
 --
 function Crouch:offRequestCrouch()
 	self._isCrouching = false
+end
+
+-- Event: offRequestCrouch
+--
+function Crouch:onCrouchAnimationComplete()
+	--
 end
 
 ---- ---- ---- ----

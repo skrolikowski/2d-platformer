@@ -23,35 +23,43 @@ end
 --
 function Axis:xForce(value)
 	--
-	-- Cut vel.x if no direction provided
-	if value == 0 then
-		if _.__abs(self._vel.x) > Config.world.tileSize * 2 then
-			self._vel.x = self._vel.x * 0.85
-		else
-			self._vel.x = 0
-		end
-
-		return
-	end
-
 	--
-	local direction = Util:sign(value)
-	local speedDiff = (direction * self._speed) - self._vel.x
-	local force     = 0
+	if self.host:isCrouching() then
+		self._vel.x = self._vel.x * 0.75
+	else
+		--
+		-- Cut vel.x if no direction provided
+		if value == 0 then
+			if _.__abs(self._vel.x) > Config.world.tileSize * 2 then
+				self._vel.x = self._vel.x * 0.85
+			else
+				self._vel.x = 0
+			end
 
-	if speedDiff ~= 0 then
-		if Util:sign(self._vel.x) ~= direction then
-			force = direction * self._speed * 2
-		else
-			force = direction * self._speed
+			return
 		end
 
-		if not self.host:onGround() then
-			force = force * 0.85
-		end
+		--
+		local direction = Util:sign(value)
+		local speedDiff = (direction * self._speed) - self._vel.x
+		local force     = 0
 
-		-- apply force
-		self:fx(self:fx() + force)
+		if speedDiff ~= 0 then
+			if Util:sign(self._vel.x) ~= direction then
+				self._vel.x = self._vel.x * 0.85
+			end
+
+			if not self.host:onGround() then
+			-- add air damping..
+				force = direction * self._speed * 0.85
+			else
+			-- default speed
+				force = direction * self._speed
+			end
+
+			-- apply force
+			self:fx(self:fx() + force)
+		end
 	end
 end
 

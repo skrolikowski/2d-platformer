@@ -4,6 +4,8 @@
 Components = {
 	transform = require 'src.entities.components.transform',
 	contact   = require 'src.entities.components.contact',
+	-- graphics
+	animation = require 'src.entities.components.graphics.animation',
 	-- movement
 	axis    = require 'src.entities.components.movements.axis',
 	crouch  = require 'src.entities.components.movements.crouch',
@@ -14,7 +16,6 @@ Components = {
 }
 
 Entities = {
-	enemy  = require 'src.entities.enemy',
 	player = require 'src.entities.player',
 
 	-- passive

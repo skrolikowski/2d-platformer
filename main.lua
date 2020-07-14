@@ -9,7 +9,7 @@ lg = love.graphics
 lj = love.joystick
 
 -- pixels please..
--- lg.setDefaultFilter('nearest', 'nearest')
+lg.setDefaultFilter('nearest', 'nearest')
 
 -- load gamepad mappings
 -- lj.loadGamepadMappings('vendor/gamecontrollerdb.txt')
@@ -93,7 +93,7 @@ function love.load()
     Gamestate.switch(Gamestates['scene'], {
         map = 'res/maps/Cemetary/001.lua',
         row = 28,
-        col = 5
+        col = 10
     })
 end
 

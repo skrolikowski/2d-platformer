@@ -1,15 +1,16 @@
 -- Player Entity
 --
 
-local Contact  = Components['contact']()
-local Crouch   = Components['crouch']()
-local Jump     = Components['jump']()
-local Gravity  = Components['gravity']()
-local Axis     = Components['axis'](500, 300)
-local State    = Components['state']()
-
 local Base   = require 'src.entities.entity'
-local Player = Base:extend(Contact, Crouch, Jump, Gravity, Axis, State)
+local Player = Base:extend(
+	Components['contact'](),
+	Components['crouch'](),
+	Components['jump'](),
+	Components['gravity'](),
+	Components['axis'](500, 300),
+	Components['state'](),
+	Components['animation']()
+)
 
 -- New Player Unit
 --
@@ -32,7 +33,13 @@ end
 -- Teardown
 --
 function Player:destroy()
-    Gamestate.current():unregisterControls({ 'onJump', 'offJump', 'axis' })
+    Gamestate.current():unregisterControls({
+    	'onCrouch',
+    	'offCrouch',
+    	'onJump',
+    	'offJump',
+    	'axis'
+    })
     --
     Base.destroy(self)
 end

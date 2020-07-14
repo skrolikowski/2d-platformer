@@ -21,9 +21,11 @@ function Jump:new(height, dt)
 	self._tGround = 0
 end
 
--- Update..
+---- ---- ---- ----
+
+-- Event: onRequestUpdate
 --
-function Jump:update(dt)
+function Jump:onRequestUpdate(dt)
 	--
 	-- update delay timer
 	self._tJump = self._tJump > 0 and self._tJump - dt or 0
@@ -44,8 +46,6 @@ function Jump:update(dt)
 		end
 	end
 end
-
----- ---- ---- ----
 
 -- Event: onGround
 -- Regain jump ability
@@ -79,16 +79,20 @@ end
 --
 function Jump:performJump()
 	--
-	-- ground jump
+	-- onGround
 	if self.host:onGround() or self._tGround < 0.1 then
-		self._tJump         = 0  -- reset
-		self._jumpCount.num = self._jumpCount.num + 1
-		--
-		self.host:py(self.host:py() - 10)  -- unstick
-		self.host:vy(-self._jumpSpeed)
-		self.host:onGround(false)
+		if self.host._isCrouching then
+			self.host:onRequestRoll()
+		else
+			self._tJump         = 0  -- reset
+			self._jumpCount.num = self._jumpCount.num + 1
+			--
+			self.host:py(self.host:py() - 10)  -- unstick
+			self.host:vy(-self._jumpSpeed)
+			self.host:onGround(false)
+		end
 	--
-	-- ledge jump
+	-- onLedge
 	elseif self.host:onLedge() then
 		self._tJump         = 0  -- reset
 		self._jumpCount.num = self._jumpCount.num + 1

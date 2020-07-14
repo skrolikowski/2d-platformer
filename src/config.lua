@@ -21,6 +21,7 @@ Config = {
 					crouch = { width = 50,  height = 48, frames = { { 5, 5, 5, 5 } }, oy = 8, total = 1 },
 					walk   = { width = 50,  height = 48, frames = { { 3, 1, 3, 7 } }, fps = 8 },
 					run    = { width = 50,  height = 48, frames = { { 4, 1, 4, 7 } }, fps = 8 },
+					roll   = { width = 50,  height = 48, frames = { { 7, 1, 7, 7 } }, oy = 8, fps = 8, total = 1 },
 				}
         	}
         }

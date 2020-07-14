@@ -14,10 +14,12 @@ function Gravity:new(height, dt)
 	self._gravity = 2 * height / dt^2
 end
 
--- Update..
+---- ---- ---- ----
+
+-- Event: onRequestUpdate
 --
-function Gravity:update(dt)
-	if self.host:onLedge() then
+function Gravity:onRequestUpdate(dt)
+	if self.host._onLedge then
 		return
 	end
 

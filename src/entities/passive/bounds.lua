@@ -44,6 +44,8 @@ function Bounds:resolve(con, target)
 	--
 	if con.norm.y == -1 then
 		con.item:onGroundContact(con.other, con)
+	elseif con.norm.y == 1 then
+		con.item:onCeilingContact(con.other, con)
 	elseif con.norm.x ~= 0 then
 		con.item:onWallContact(con.other, con)
 	end

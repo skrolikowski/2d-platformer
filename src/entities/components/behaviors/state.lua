@@ -17,7 +17,9 @@ end
 --
 function State:update(dt)
 	if self.host:onGround() then
-		if self.host:isCrouching() then
+		if self.host._isRolling then
+			self.host:onSetState('roll')
+		elseif self.host._isCrouching then
 			self.host:onSetState('crouch')
 		elseif _.__abs(self.host:vx()) > 1 then
 			self.host:onSetState('walk')

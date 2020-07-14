@@ -9,33 +9,52 @@ local Crouch = Base:extend()
 function Crouch:__new(data)
 	Base.__new(self, data)
 	--
-	self._iHeight = self.host:height()
-	self._cHeight = self._iHeight / 2
-	self._cOffset = (self._iHeight - self._cHeight) / 2
-end
+	-- properties
+	self._initHeight   = self.host:height()
+	self._crouchHeight = self._initHeight / 2
+	self._crouchOffset = (self._initHeight - self._crouchHeight) / 2
 
--- Update..
---
-function Crouch:update(dt)
-	if self._isCrouching then
-		if self.host:height() ~= self._cHeight then
-			self.host:onUpdate({
-				y = self.host:py() + self._cOffset,
-				h = self._cHeight
-			})
-		end
-	else
-		if self.host:height() ~= self._iHeight then
-		-- adjust back to init height
-			self.host:onUpdate({
-				y = self.host:py() - self._cOffset,
-				h = self._iHeight
-			})
-		end
-	end
+	-- flags
+	self._isCrouching = false
 end
 
 ---- ---- ---- ----
+
+-- Update..
+--
+function Crouch:onRequestUpdate(dt)
+	if self._isCrouching then
+		self.host:vx(0)
+		--
+		self:onCrouch()
+	else
+		self:onStand()
+	end
+end
+
+-- Event: onCrouch
+-- Shrink height and offset y.
+--
+function Crouch:onCrouch()
+	if self.host:height() ~= self._crouchHeight then
+		self.host:onUpdate({
+			y = self.host:py() + self._crouchOffset,
+			h = self._crouchHeight
+		})
+	end
+end
+
+-- Event: onStand
+-- Shrink height and offset y.
+--
+function Crouch:onStand()
+	if self.host:height() ~= self._initHeight then
+		self.host:onUpdate({
+			y = self.host:py() - self._crouchOffset,
+			h = self._initHeight
+		})
+	end
+end
 
 -- Event: onRequestCrouch
 --
@@ -49,18 +68,16 @@ function Crouch:offRequestCrouch()
 	self._isCrouching = false
 end
 
--- Event: offRequestCrouch
---
-function Crouch:onCrouchAnimationComplete()
-	--
-end
-
 ---- ---- ---- ----
 
--- Flag check
+-- Get/set `_isCrouching` flag
 --
-function Crouch:isCrouching()
-	return self._isCrouching
+function Crouch:isCrouching(value)
+	if value == nil then
+		return self._isCrouching
+	end
+
+	self._isCrouching = value
 end
 
 return Crouch

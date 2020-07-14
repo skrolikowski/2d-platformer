@@ -14,9 +14,9 @@ function Contact:new(height, dt)
 	self._onLedge  = false
 end
 
--- Update..
+-- Event: onRequestUpdate
 --
-function Contact:update(dt)
+function Contact:onRequestUpdate(dt)
 	--
 	-- check if still on ground
 	for id, con in pairs(self._onGround) do
@@ -60,6 +60,18 @@ function Contact:onGroundContact(other, con)
 
 	--
 	-- match `vel` of ground
+	if other._vel then
+		self.host:vy(other:vy())
+	else
+		self.host:vy(0)
+	end
+end
+
+-- Event: onCeilingContact
+--
+function Contact:onCeilingContact(other, con)
+	--
+	-- match `vel` of ceiling
 	if other._vel then
 		self.host:vy(other:vy())
 	else

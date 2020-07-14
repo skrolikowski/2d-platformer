@@ -86,13 +86,6 @@ end
 
 ---- ---- ---- ----
 
--- Event: onMove
--- Move entity in World.
---
-function Entity:onMove(nextPos)
-	self.world:move(self, nextPos)
-end
-
 -- Event: onUpdate
 -- Update entity pos/dimensions in World.
 --

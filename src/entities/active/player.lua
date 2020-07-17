@@ -4,6 +4,7 @@
 local Base   = require 'src.entities.active.active'
 local Player = Base:extend(
 	Components['contact'](),
+	Components['attack'](),
 	Components['move'](),
 	Components['crouch'](),
 	Components['roll'](),
@@ -15,13 +16,15 @@ local Player = Base:extend(
 
 -- New Player Unit
 --
-function Player:new(data)
+function Player:new(name, data, mixins)
 	Base.new(self, _:merge(data, {
 		name = 'player',
 	}))
+
 	--
 	-- register
-	Gamestate.current():registerControls({
+	Gamestate.current():bindControls({
+		attack    = function(...) self:onRequestAttack(...)  end,
 		onCrouch  = function(...) self:onRequestCrouch(...)  end,
 		offCrouch = function(...) self:offRequestCrouch(...) end,
 		onJump    = function(...) self:onRequestJump(...)    end,
@@ -33,7 +36,7 @@ end
 -- Teardown
 --
 function Player:destroy()
-    Gamestate.current():unregisterControls({
+    Gamestate.current():unbindControls({
     	'onCrouch',
     	'offCrouch',
     	'onJump',

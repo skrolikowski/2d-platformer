@@ -236,6 +236,18 @@ function Modern:clone()
 end
 
 --[[
+    Add additional mixins to Module.
+
+    @param  table(...) - `Mixins`
+    @return void
+]]--
+function Modern:addMixins(...)
+    table.foreach({...}, function(_, mixin)
+        __addMixin(self, mixin)
+    end)
+end
+
+--[[
     Extend `Module`.
 
     @param  table(...) - `Mixins`

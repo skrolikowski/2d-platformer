@@ -2,24 +2,27 @@
 --
 
 Components = {
-	transform = require 'src.entities.components.transform',
-	contact   = require 'src.entities.components.contact',
+	-- passive
+	contact = require 'src.entities.components.passive.contact',
+	gravity = require 'src.entities.components.passive.gravity',
 	-- graphics
 	animation = require 'src.entities.components.graphics.animation',
-	-- movement
-	move    = require 'src.entities.components.movements.move',
-	crouch  = require 'src.entities.components.movements.crouch',
-	jump    = require 'src.entities.components.movements.jump',
-	gravity = require 'src.entities.components.movements.gravity',
-	roll    = require 'src.entities.components.movements.roll',
+	-- actions
+	attack  = require 'src.entities.components.actions.attack',
+	move    = require 'src.entities.components.actions.move',
+	crouch  = require 'src.entities.components.actions.crouch',
+	jump    = require 'src.entities.components.actions.jump',
+	roll    = require 'src.entities.components.actions.roll',
 	-- behaviors
 	state = require 'src.entities.components.behaviors.state',
+	-- detection = require 'src.entities.components.behaviors.detection',
 }
 
 Entities = {
-	player = require 'src.entities.active.player',
+	-- kinematic
+	kinematic = require 'src.entities.kinematic',
 
-	-- passive
-	bounds = require 'src.entities.passive.bounds',
-	slopes = require 'src.entities.passive.slopes'
+	-- static
+	bounds = require 'src.entities.static.bounds',
+	slopes = require 'src.entities.static.slopes'
 }

@@ -32,6 +32,18 @@ function Crouch:onRequestUpdate(dt)
 	end
 end
 
+-- Event: onRequestCrouch
+--
+function Crouch:onRequestCrouch()
+	self._isCrouching = true
+end
+
+-- Event: offRequestCrouch
+--
+function Crouch:offRequestCrouch()
+	self._isCrouching = false
+end
+
 -- Event: onCrouch
 -- Shrink height and offset y.
 --
@@ -54,18 +66,6 @@ function Crouch:onStand()
 			h = self._initHeight
 		})
 	end
-end
-
--- Event: onRequestCrouch
---
-function Crouch:onRequestCrouch()
-	self._isCrouching = true
-end
-
--- Event: offRequestCrouch
---
-function Crouch:offRequestCrouch()
-	self._isCrouching = false
 end
 
 ---- ---- ---- ----

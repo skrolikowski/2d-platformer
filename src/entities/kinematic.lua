@@ -1,11 +1,13 @@
--- Base Active Entity
+-- Kinematic Entity
 --
 
-local Base   = require 'src.entities.entity'
-local Active = Base:extend()
+local Base      = require 'src.entities.entity'
+local Kinematic = Base:extend()
 
-function Active:new(data)
-	Base.new(self, _:merge(data, {
+function Kinematic:new(name, data, ...)
+	self:addMixins(...)
+	--
+	Base.new(self, name, _:merge(data, {
 		bodyType = 'kinematic',
 		color    = { _:color('green-500')}
 	}))
@@ -18,7 +20,9 @@ function Active:new(data)
 	self._speedMax = 200
 end
 
-function Active:update(dt)
+-- Update
+--
+function Kinematic:update(dt)
 	self:onRequestUpdate(dt)
 	--
 	--
@@ -30,17 +34,17 @@ function Active:update(dt)
 
 	-- limit speed
 	self._vel.x = _:clamp(self._vel.x, -self._speedMax, self._speedMax)
-	self._vel.y = _:clamp(self._vel.y, -800, 800)
+	self._vel.y = _:clamp(self._vel.y, -600, 600)
 
 	local dp      = (initVel + self._vel) * dt * 0.5
 	local nextPos = self._pos + dp
 
-	self:onMove(nextPos)
+	self:onRequestMove(nextPos)
 end
 
 -- Draw
 --
-function Active:draw()
+function Kinematic:draw()
 	local cx, cy  = self:center()
 	local r, g, b = unpack(self._color)
 
@@ -53,7 +57,7 @@ end
 
 ---- ---- ---- ----
 
-function Active:onRequestAxis(value)
+function Kinematic:onRequestAxis(value)
 	self._axis = Vec2(
 		value.x or self._axis.x,
 		value.y or self._axis.y
@@ -63,7 +67,7 @@ end
 -- Event: onMove
 -- Move entity in World.
 --
-function Active:onMove(nextPos)
+function Kinematic:onRequestMove(nextPos)
 	self.world:move(self, nextPos)
 end
 
@@ -71,7 +75,7 @@ end
 
 -- Get/set velocity
 --
-function Active:vel(value)
+function Kinematic:vel(value)
 	if value == nil then
 		return self._vel
 	end
@@ -84,7 +88,7 @@ end
 
 --
 --
-function Active:vx(value)
+function Kinematic:vx(value)
 	if value == nil then
 		return self._vel.x
 	end
@@ -94,7 +98,7 @@ end
 
 --
 --
-function Active:vy(value)
+function Kinematic:vy(value)
 	if value == nil then
 		return self._vel.y
 	end
@@ -104,7 +108,7 @@ end
 
 -- Get/set axis
 --
-function Active:axis(value)
+function Kinematic:axis(value)
 	if value == nil then
 		return self._axis
 	end
@@ -117,7 +121,7 @@ end
 
 -- Get/set x-axis
 --
-function Active:ax(value)
+function Kinematic:ax(value)
 	if value == nil then
 		return self._axis.x
 	end
@@ -127,7 +131,7 @@ end
 
 -- Get/set y-axis
 --
-function Active:ay(value)
+function Kinematic:ay(value)
 	if value == nil then
 		return self._axis.y
 	end
@@ -137,7 +141,7 @@ end
 
 -- Get/set force
 --
-function Active:force(value)
+function Kinematic:force(value)
 	if value == nil then
 		return self._force
 	end
@@ -150,7 +154,7 @@ end
 
 -- Get/set x-force
 --
-function Active:fx(value)
+function Kinematic:fx(value)
 	if value == nil then
 		return self._force.x
 	end
@@ -160,7 +164,7 @@ end
 
 -- Get/set y-force
 --
-function Active:fy(value)
+function Kinematic:fy(value)
 	if value == nil then
 		return self._force.y
 	end
@@ -168,4 +172,4 @@ function Active:fy(value)
 	self._force.y = value
 end
 
-return Active
+return Kinematic

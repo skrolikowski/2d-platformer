@@ -14,6 +14,12 @@ end
 -- Tear down
 --
 function Scene:destroy()
+	self:unbindControls({
+		'onAttack',
+		'onCrouch',
+		'offCrouch'
+	})
+	--
 	self.camera:destroy()
 	self.world:destroy()
 end
@@ -32,13 +38,25 @@ function Scene:enter(from, ...)
 	self.world:addLayer(self.map.layers['Bounds'])
 	-- self.world:addLayer(self.map.layers['Slopes'])
 	
+	--
 	-- spawn player
-	self.player = Entities['player']({
-		x      = self.settings['col'] * Config.world.tileSize,
-		y      = self.settings['row'] * Config.world.tileSize,
-		width  = 16,
-		height = 32
-	})
+	self.player = Entities['kinematic']('player',
+		{
+			x      = self.settings['col'] * Config.world.tileSize,
+			y      = self.settings['row'] * Config.world.tileSize,
+			width  = 16,
+			height = 32
+		},
+		Components['contact'](),
+		Components['attack'](),
+		Components['move'](),
+		Components['crouch'](),
+		Components['roll'](),
+		Components['jump'](),
+		Components['gravity'](),
+		Components['state'](),
+		Components['animation']()
+	)
 	self.world:add(self.player)
 
 	--
@@ -51,7 +69,15 @@ function Scene:enter(from, ...)
 	)
 
 	-- controls
-	self:setControl('scene')
+	self:registerControls('scene')
+	self:bindControls({
+		onAxis    = function(...) self.player:onRequestAxis(...)    end,
+		onAttack  = function(...) self.player:onRequestAttack(...)  end,
+		onCrouch  = function(...) self.player:onRequestCrouch(...)  end,
+		offCrouch = function(...) self.player:offRequestCrouch(...) end,
+		onJump    = function(...) self.player:onRequestJump(...)    end,
+		offJump   = function(...) self.player:offRequestJump(...)   end,
+	})
 
 	-- flags
 	self.isPaused = false

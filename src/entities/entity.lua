@@ -4,9 +4,9 @@
 local Modern = require 'vendor.modern'
 local Entity = Modern:extend()
 
-function Entity:new(data)
+function Entity:new(name, data)
 	self.id   = Util:uuid()
-	self.name = data.name
+	self.name = name or 'entity'
 
 	--
 	-- properties

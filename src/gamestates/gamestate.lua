@@ -58,7 +58,7 @@ end
 -- Event: onControl (callbacks)
 --
 function Gamestate:onControl(name, ...)
-	self.controls[name](...)
+	pcall(self.controls[name], ...)
 end
 
 -- Event: quit game
@@ -71,7 +71,7 @@ end
 
 -- Register control callbacks
 --
-function Gamestate:registerControls(...)
+function Gamestate:bindControls(...)
 	for name, callback in pairs(...) do
 		self.controls[name] = callback
 	end
@@ -79,7 +79,7 @@ end
 
 -- Set controls
 --
-function Gamestate:setControl(name)
+function Gamestate:registerControls(name)
 	if self.control ~= name then
 		-- unregister
 		if self.control ~= nil then 

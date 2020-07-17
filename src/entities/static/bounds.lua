@@ -4,9 +4,8 @@
 local Base   = require 'src.entities.entity'
 local Bounds = Base:extend()
 
-function Bounds:new(data)
-	Base.new(self, _:merge(data, {
-		name  = 'bounds',
+function Bounds:new(name, data)
+	Base.new(self, name, _:merge(data, {
 		x     = (data.x + data.width / 2),
 		y     = (data.y + data.height / 2),
 		color = data.color or { _:color('red-300') },

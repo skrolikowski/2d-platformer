@@ -16,9 +16,13 @@ end
 -- Update
 --
 function State:update(dt)
+	--
+	-- Ground Actions
 	if self.host:onGround() then
 		if self.host._isRolling then
 			self.host:onSetState('roll')
+		elseif self.host._isAttacking then
+			self.host:onSetState('attack')
 		elseif self.host._isCrouching then
 			self.host:onSetState('crouch')
 		elseif _.__abs(self.host:vx()) > 1 then
@@ -26,8 +30,12 @@ function State:update(dt)
 		else
 			self.host:onSetState('idle')
 		end
+	--
+	-- In-air Actions
 	else
-		if self.host:vy() < 0 then
+		if self.host._isAttacking then
+			self.host:onSetState('attack')
+		elseif self.host:vy() < 0 then
 			self.host:onSetState('jump')
 		else
 			self.host:onSetState('fall')

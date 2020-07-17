@@ -6,7 +6,7 @@ local Slope = Base:extend()
 
 -- New slope bounds
 --
-function Slope:new(data)
+function Slope:new(name, data)
 	assert(data.shape == 'polyline', 'Must be a polyline shape.')
 	--
 	-- properties
@@ -21,8 +21,7 @@ function Slope:new(data)
 	local w, h   = bounds:dimensions()
 
 	--
-	Base.new(self, _:merge(data, {
-		name   = 'slope',
+	Base.new(self, name, _:merge(data, {
 		color  = { _:color('blue-300') },
 		x      = cx,
 		y      = cy,

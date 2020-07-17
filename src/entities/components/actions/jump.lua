@@ -82,12 +82,13 @@ function Jump:performJump()
 	-- onGround
 	if self.host:onGround() or self._tGround < 0.1 then
 		if self.host._isCrouching then
+			--
+			-- defer to roll
 			self.host:onRequestRoll()
 		else
 			self._tJump         = 0  -- reset
 			self._jumpCount.num = self._jumpCount.num + 1
 			--
-			self.host:py(self.host:py() - 10)  -- unstick
 			self.host:vy(-self._jumpSpeed)
 			self.host:onGround(false)
 		end
@@ -97,7 +98,6 @@ function Jump:performJump()
 		self._tJump         = 0  -- reset
 		self._jumpCount.num = self._jumpCount.num + 1
 		--
-		-- self.host:vx(-self._jumpSpeed * 0.25)
 		self.host:vy(-self._jumpSpeed * 0.8)
 		self.host:onLedge(false)
 	end

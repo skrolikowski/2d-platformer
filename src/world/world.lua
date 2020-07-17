@@ -26,7 +26,7 @@ function World:addLayer(layer)
 		local name = _.__lower(obj.name ~= '' and obj.name or layer.name)
 
 		self:add(
-			Entities[name](obj)
+			Entities[name](name, obj)
 		)
 	end
 end

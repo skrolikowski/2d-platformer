@@ -35,7 +35,8 @@ function Roll:onRequestRoll()
 	self._isRolling = true
 end
 
--- Event: offRequestRoll
+-- Event: onRollAnimationComplete
+-- Rolling animation has completed.
 --
 function Roll:onRollAnimationComplete()
 	self._isRolling = false

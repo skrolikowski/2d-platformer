@@ -62,19 +62,19 @@ function Detection:update(dt)
 	end
 end
 
--- Draw
---
-function Detection:draw()
-	local cx, cy  = self.host:center()
-	local heading = self:heading()
-	local r, g, b = unpack(Config.color.radar)
+-- -- Draw
+-- --
+-- function Detection:draw()
+-- 	local cx, cy  = self.host:center()
+-- 	local heading = self:heading()
+-- 	local r, g, b = unpack(Config.color.radar)
 
-	lg.setColor(r, g, b, 0.10)
-	lg.arc('fill', cx, cy, self._radius, heading - self._angle, heading + self._angle)
-	lg.setColor(r, g, b, 0.35)
-	lg.setLineWidth(1)
-	lg.arc('line', cx, cy, self._radius, heading - self._angle, heading + self._angle)
-end
+-- 	lg.setColor(r, g, b, 0.10)
+-- 	lg.arc('fill', cx, cy, self._radius, heading - self._angle, heading + self._angle)
+-- 	lg.setColor(r, g, b, 0.35)
+-- 	lg.setLineWidth(1)
+-- 	lg.arc('line', cx, cy, self._radius, heading - self._angle, heading + self._angle)
+-- end
 
 ---- ---- ---- ----
 

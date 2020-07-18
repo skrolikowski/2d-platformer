@@ -17,13 +17,13 @@ Config = {
         		},
 				animation = {
 					dash   = { sheet = 'main', width = 50,  height = 48, frames = {{1,1,1,3}}},
+					walk   = { sheet = 'main', width = 50,  height = 48, frames = {{5,8,5,10},{6,1,6,3}}},
 					die    = { sheet = 'main', width = 50,  height = 48, frames = {{1,4,5,7}}, total = 1 },
-					fall   = { sheet = 'main', width = 50,  height = 48, frames = {{1,8,1,10}, { 2, 1, 2, 2 } }, total = 1 },
+					fall   = { sheet = 'main', width = 50,  height = 48, frames = {{3,7,3,7} }, total = 1 },
 					hit    = { sheet = 'main', width = 50,  height = 48, frames = {{2,3,2,6}}, total = 1 },
 					idle   = { sheet = 'main', width = 50,  height = 48, frames = {{2,6,2,7}}, fps = 3 },
 					jump   = { sheet = 'main', width = 50,  height = 48, frames = {{3,4,3,9}}, total = 1 },
 					crouch = { sheet = 'main', width = 50,  height = 48, frames = {{3,9,3,9}}, oy = 8, total = 1 },
-					walk   = { sheet = 'main', width = 50,  height = 48, frames = {{5,8,5,10},{6,1,6,3}}},
 					roll   = { sheet = 'main', width = 50,  height = 48, frames = {{4,2,4,7}}, oy = 8, total = 1 },
 					-- attacks
 					attack = { sheet = 'attack', width = 100, height = 65, frames = {{1,1,1,5},{2,1,2,2}}, ox=-12, oy=10, total=1 },

@@ -1,7 +1,7 @@
 -- Grid Cell
 --
 
-local Modern = require 'vendor.modern'
+local Modern = require 'modern'
 local Cell   = Modern:extend()
 
 -- New Cell

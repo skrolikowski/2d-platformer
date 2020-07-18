@@ -1,7 +1,7 @@
 -- Grid
 --
 
-local Modern = require 'vendor.modern'
+local Modern = require 'modern'
 local Grid   = Modern:extend()
 
 -- New Grid

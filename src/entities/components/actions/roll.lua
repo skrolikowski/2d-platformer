@@ -17,12 +17,7 @@ end
 --
 function Roll:onRequestUpdate(dt)
 	if self._isRolling then
-		if self.host._isMirrored then
-			self.host:vx(-1 * self.host._speed * 0.85)
-		else
-			self.host:vx( 1 * self.host._speed * 0.85)
-		end
-
+	-- keep crouch status
 		self.host:onCrouch()
 	end
 end
@@ -32,6 +27,7 @@ end
 -- Event: onRequestRoll
 --
 function Roll:onRequestRoll()
+	self.host:ax(self.host:facing())
 	self._isRolling = true
 end
 
@@ -40,6 +36,7 @@ end
 --
 function Roll:onRollAnimationComplete()
 	self._isRolling = false
+	self.host:ax(0)
 end
 
 ---- ---- ---- ----

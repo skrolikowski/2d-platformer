@@ -15,9 +15,12 @@ end
 --
 function Scene:destroy()
 	self:unbindControls({
+		'onAxis',
 		'onAttack',
 		'onCrouch',
-		'offCrouch'
+		'offCrouch',
+		'onJump',
+		'offJump',
 	})
 	--
 	self.camera:destroy()
@@ -47,18 +50,18 @@ function Scene:enter(from, ...)
 			width  = 16,
 			height = 32
 		},
-		Components['detection'](),
+		-- Components['detection'](),
 		Components['contact'](),
 		Components['attack'](),
+		Components['crouch'](),
+		Components['roll'](),
 		Components['move'](),
-		-- Components['crouch'](),
-		-- Components['roll'](),
-		-- Components['jump'](),
+		Components['jump'](),
 		Components['gravity'](),
 		Components['state'](),
 		Components['animation']()
 	)
-	self.player:behavior():set('attack', 'patrol')
+	-- self.player:behavior():set('attack','patrol')
 	self.world:add(self.player)
 
 	--
@@ -106,11 +109,7 @@ function Scene:update(dt)
 
 	--
 	self.world:queryWorld(function(item)
-		--
-		-- remove requested items
-		if item._remove then
-			self:remove(item)
-		elseif item._bodyType == 'kinematic' then
+		if item._bodyType == 'kinematic' then
 			item:update(dt)
 		end
 	end)

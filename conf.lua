@@ -1,3 +1,4 @@
+package.path = package.path .. ";vendor/?.lua"
 require 'lua-lander'
 --
 

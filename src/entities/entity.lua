@@ -1,7 +1,7 @@
 -- Base Entity
 --
 
-local Modern = require 'vendor.modern'
+local Modern = require 'modern'
 local Entity = Modern:extend()
 
 function Entity:new(name, data)

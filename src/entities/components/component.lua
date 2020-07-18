@@ -1,7 +1,7 @@
 -- Base Component
 --
 
-local Base      = require 'vendor.modern'
+local Base      = require 'modern'
 local Component = Base:extend()
 
 function Component:__new(data)

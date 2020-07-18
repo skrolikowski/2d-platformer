@@ -7,13 +7,13 @@ local Jump = Base:extend()
 
 -- New..
 --
-function Jump:new(height, dt)
-	height = height or Config.world.tileSize * 6
-	dt     = dt or 0.4
+function Jump:new(tileHeight, apexTime)
+	tileHeight = tileHeight or Config.world.tileSize * 6
+	apexTime   = apexTime or 0.4
 	--
 	-- properties
 	self._jumpCount  = { num = 0, max = 1}
-	self._jumpSpeed  = _.__sqrt(2 * (2 * height / dt^2) * height)
+	self._jumpSpeed  = _.__sqrt(2 * (2 * tileHeight / apexTime^2) * tileHeight)
 	self._jumpDelay  = 0.15
 
 	-- timers

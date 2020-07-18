@@ -24,8 +24,6 @@ end
 --
 function Crouch:onRequestUpdate(dt)
 	if self._isCrouching then
-		self.host:vx(0)
-		--
 		self:onCrouch()
 	else
 		self:onStand()

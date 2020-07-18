@@ -1,16 +1,17 @@
-local Modern = require 'vendor.modern'
+-- Game World
+--
+
+local Modern = require 'modern'
 local World  = Modern:extend()
 
--- new world
+-- New
 --
 function World:new(game)
 	self.game   = game
 	self.width  = game.map.width  * game.map.tilewidth
 	self.height = game.map.height * game.map.tileheight
 	self.grid   = Grid(self, game.map.tilewidth)
-	--
-	self.items = {}
-	-- self.cons  = {}
+	self.items  = {}
 end
 
 -- teardown
@@ -165,10 +166,6 @@ function World:add(item)
 
 	-- register
 	self.items[item.id] = item
-
-	-- if not self.cons[item.id] then
-	-- 	self.cons[item.id] = {}
-	-- end
 
 	--
 	-- add item to cells

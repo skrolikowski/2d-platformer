@@ -1,7 +1,7 @@
 -- Dice Roller
 --
 
-local Modern = require 'vendor.modern'
+local Modern = require 'modern'
 local Dice   = Modern:extend()
 
 function Dice:new(str)

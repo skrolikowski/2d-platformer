@@ -15,8 +15,8 @@ function Kinematic:new(name, data, ...)
 	-- properties
 	self._vel      = Vec2()
 	self._force    = Vec2()
-	self._speed    = 100
-	self._speedMax = 200
+	self._speed    = 150
+	self._speedMax = 300
 	self._behavior = BM(self)
 end
 

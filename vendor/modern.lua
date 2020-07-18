@@ -64,11 +64,29 @@ end
     @internal
     @return string(name, caller, func)
 ]]--
+-- local __resolveName = function()
+--     local info     = debug.getinfo(3, "Sl")
+--     local source   = string.gsub(info.source, "@", "")
+
+--     return source:match("^.*/(.*).lua")
+-- end
 local __resolveName = function()
+    local pattern  = "([%w_]+)%s*=%s*([%w_]+)[:|.]?([%w]*)%((.*)%)"
     local info     = debug.getinfo(3, "Sl")
     local source   = string.gsub(info.source, "@", "")
-    
-    return source:match("^.*/(.*).lua")
+    local lineNum  = 0
+    local lineData = ""
+
+    for line in io.lines(source) do
+        lineNum  = lineNum + 1
+        lineData = line
+
+        if lineNum == info.currentline then
+            break
+        end
+    end
+
+    return string.match(lineData, pattern)
 end
 
 --[[

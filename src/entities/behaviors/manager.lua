@@ -1,7 +1,7 @@
 -- Behavior Manager
 --
 
-local Modern  = require 'vendor.modern'
+local Modern  = require 'modern'
 local Manager = Modern:extend()
 
 -- New

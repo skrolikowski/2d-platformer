@@ -1,7 +1,7 @@
 -- Base Screen
 --
 
-local Modern    = require 'vendor.modern'
+local Modern    = require 'modern'
 local Gamestate = Modern:extend()
 
 function Gamestate:init(data)

@@ -1,4 +1,4 @@
-local Modern  = require 'vendor.modern'
+local Modern  = require 'modern'
 local Contact = Modern:extend()
 
 -- new contact

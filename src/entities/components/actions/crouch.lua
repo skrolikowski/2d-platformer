@@ -7,7 +7,7 @@ local Crouch = Base:extend()
 -- New..
 --
 function Crouch:__new(data)
-	Base.__new(self, data)
+	Base.__new(self, 'crouch', data)
 	--
 	-- properties
 	self._initHeight   = self.host:height()

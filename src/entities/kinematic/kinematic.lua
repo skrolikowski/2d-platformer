@@ -5,7 +5,7 @@ local Base      = require 'src.entities.entity'
 local Kinematic = Base:extend()
 
 function Kinematic:new(name, data, ...)
-	self:addMixins(...)
+	Base.addMixins(self, ...)
 	--
 	Base.new(self, name, _:merge(data, {
 		bodyType = 'kinematic',
@@ -15,18 +15,30 @@ function Kinematic:new(name, data, ...)
 	-- properties
 	self._vel      = Vec2()
 	self._force    = Vec2()
-	self._axis     = Vec2()
-	self._speed    = 150
+	self._speed    = 100
 	self._speedMax = 200
+	self._behavior = BM(self)
+end
+
+-- Teardown
+--
+function Kinematic:destroy()
+	self._behavior:destroy()
+	--
+	self.world:remove(self)
 end
 
 -- Update
 --
 function Kinematic:update(dt)
-	self:onRequestUpdate(dt)
+	self._behavior:update(dt)
+
 	--
-	--
+	-- update position
 	local initVel = self._vel:copy()
+
+	-- query mixins
+	self:onRequestUpdate(dt)
 
 	-- apply forces to velocity
 	self._vel = self._vel + self._force * dt
@@ -57,13 +69,6 @@ end
 
 ---- ---- ---- ----
 
-function Kinematic:onRequestAxis(value)
-	self._axis = Vec2(
-		value.x or self._axis.x,
-		value.y or self._axis.y
-	)
-end
-
 -- Event: onMove
 -- Move entity in World.
 --
@@ -72,6 +77,12 @@ function Kinematic:onRequestMove(nextPos)
 end
 
 ---- ---- ---- ----
+
+-- Get/set behavior manager
+--
+function Kinematic:behavior()
+	return self._behavior
+end
 
 -- Get/set velocity
 --
@@ -104,39 +115,6 @@ function Kinematic:vy(value)
 	end
 
 	self._vel.y = value
-end
-
--- Get/set axis
---
-function Kinematic:axis(value)
-	if value == nil then
-		return self._axis
-	end
-
-	self._axis = Vec2(
-		value.x or self._axis.x,
-		value.y or self._axis.y
-	)
-end
-
--- Get/set x-axis
---
-function Kinematic:ax(value)
-	if value == nil then
-		return self._axis.x
-	end
-
-	self._axis.x = value
-end
-
--- Get/set y-axis
---
-function Kinematic:ay(value)
-	if value == nil then
-		return self._axis.y
-	end
-
-	self._axis.y = value
 end
 
 -- Get/set force

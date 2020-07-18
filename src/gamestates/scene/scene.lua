@@ -47,16 +47,18 @@ function Scene:enter(from, ...)
 			width  = 16,
 			height = 32
 		},
+		Components['detection'](),
 		Components['contact'](),
 		Components['attack'](),
 		Components['move'](),
-		Components['crouch'](),
-		Components['roll'](),
-		Components['jump'](),
+		-- Components['crouch'](),
+		-- Components['roll'](),
+		-- Components['jump'](),
 		Components['gravity'](),
 		Components['state'](),
 		Components['animation']()
 	)
+	self.player:behavior():set('attack', 'patrol')
 	self.world:add(self.player)
 
 	--

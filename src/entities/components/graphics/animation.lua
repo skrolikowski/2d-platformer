@@ -8,10 +8,6 @@ local Animation = Base:extend()
 --
 function Animation:new()
 	--
-	-- properties
-	self._sprite_ox = 0
-	self._sprite_oy = 2
-
 	-- flags
 	self._isMirrored = false
 	self._isFlipped  = false
@@ -23,12 +19,11 @@ function Animation:__new(data)
 	Base.__new(self, data)
 	--
 	-- properties
-	self._sheet      = Config.world.entity[self.host.name].sheet
-	self._animations = Config.world.entity[self.host.name].animation
-	self._sprite     = Animator()
+	self._config = Config.world.entity[self.host.name]
+	self._sprite = Animator()
 
 	-- add animations
-    for name, animation in pairs(self._animations) do
+    for name, animation in pairs(self._config.animation) do
     	--
     	-- setup callback
     	animation.after = function()
@@ -36,7 +31,11 @@ function Animation:__new(data)
     	end
 
     	-- add animation
-		self._sprite:addAnimation(name, _:merge({ image = self._sheet }, animation))
+		self._sprite:addAnimation(name,
+			_:merge({
+				image = self._config.sheet[animation.sheet]
+			}, animation)
+		)
 	end
 
 	--
@@ -58,19 +57,15 @@ end
 function Animation:draw()
 	local cx, cy = self.host:center()
 	local w, h   = self._sprite:dimensions()
-	local sx, sy, ox, oy
-    
-    --
-	-- scale/flip
-    sx = self.host:sx()
-    sy = self.host:sy()
+	local ox, oy = self._sprite:offsets()
+    local sx, sy = self.host:sx(), self.host:sy()
 
     if self:isMirrored() then sx = -sx end
     if self:isFlipped()  then sy = -sy end
 
     -- offset
-    ox = self._sprite_ox + w / 2
-    oy = self._sprite_oy + h / 2
+    ox = ox + w / 2
+    oy = oy + h / 2
 
     -- draw
     lg.setColor(Config.color.white)

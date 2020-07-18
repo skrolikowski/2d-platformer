@@ -21,7 +21,7 @@ function Animator:addAnimation(name, options)
 	local frames = nil
 
 	if options.frames then
-		frames = self:parseFrames(options.frames, image, width, height, options.ox, options.oy)
+		frames = self:parseFrames(options.frames, image, width, height)
 	end
 
 	self.animations[name] = {
@@ -30,6 +30,8 @@ function Animator:addAnimation(name, options)
 		width  = width,
 		height = height,
 		frames = frames,
+		ox     = options.ox or 0,
+		oy     = options.oy or 0,
 		fps    = options.fps   or 10,
 		total  = options.total or nil,
 		after  = options.after or function() end
@@ -50,7 +52,7 @@ end
 
 -- Parse frames requested for image
 --
-function Animator:parseFrames(segments, image, width, height, ox, oy)
+function Animator:parseFrames(segments, image, width, height)
 	local frames = {}
 	local row, col
 
@@ -65,8 +67,8 @@ function Animator:parseFrames(segments, image, width, height, ox, oy)
 				table.insert(
 					frames,
 					lg.newQuad(
-						(ox or 0) + (c - 1) * width,
-						(oy or 0) + (r - 1) * height,
+						(c - 1) * width,
+						(r - 1) * height,
 						width,
 						height,
 						image:getDimensions()
@@ -84,6 +86,16 @@ end
 function Animator:dimensions()
 	if self.current then
 		return self.current.width, self.current.height
+	end
+
+	return 0, 0
+end
+
+-- Get current animation frame's offsets
+--
+function Animator:offsets()
+	if self.current then
+		return self.current.ox, self.current.oy
 	end
 
 	return 0, 0

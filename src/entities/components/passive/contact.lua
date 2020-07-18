@@ -36,13 +36,13 @@ end
 
 ---- ---- ---- ----
 
--- Event: onAxisChange
+-- Event: onRequestAxis
 -- Detach from ledge
 --
-function Contact:onAxisChange(value)
-	if value.y == 1 and self._onLedge then
-		self._onLedge = false
-	end
+function Contact:onRequestAxis(value)
+	-- if value.y == 1 and self._onLedge then
+	-- 	self._onLedge = false
+	-- end
 end
 
 -- Event: onContact
@@ -50,7 +50,7 @@ end
 function Contact:onContact(con)
 	-- print('onContact', con.other.name, con.norm)
 	--
-
+	self.host:behavior():onContact(con)
 end
 
 -- Event: onGroundContact

@@ -7,6 +7,8 @@ local State = Base:extend()
 -- New..
 --
 function State:new(state)
+	--
+	-- properties
 	self._state = {
 		curr = state or 'idle',
 		text = lg.newText(Config.ui.font.xs, state or 'idle')

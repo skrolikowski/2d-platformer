@@ -36,6 +36,13 @@ local __addMixin = function(obj, mixin)
     mixin.__module = obj
 end
 
+local __removeMixin = function(obj, mixin)
+    assert(mixin.__name ~= nil, "Please make sure your table has a `__name` property (e.g. `{ __name = 'Example' }`)")
+
+    -- unlink Modules..
+    obj.__mixins[mixin.__name] = nil
+end
+
 --[[
     Get mixin by name, included in this Module.
     If not found, will error out.
@@ -244,6 +251,18 @@ end
 function Modern:addMixins(...)
     table.foreach({...}, function(_, mixin)
         __addMixin(self, mixin)
+    end)
+end
+
+--[[
+    Remove existing mixins from Module.
+
+    @param  table(...)
+    @return void
+]]--
+function Modern:removeMixins(...)
+    table.foreach({...}, function(_, name)
+        __removeMixin(self, __getMixin(self, name))
     end)
 end
 

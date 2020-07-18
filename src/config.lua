@@ -11,18 +11,39 @@ Config = {
 		cellSize = 32,
         entity   = {
         	player = {
-        		-- sheet = lg.newImage('res/images/entities/sheet_hero_archer_1.png'),
-        		-- sheet = lg.newImage('res/images/entities/sheet_hero_mage_1.png'),
-        		sheet = lg.newImage('res/images/entities/sheet_hero_sword_1.png'),
+				sheet = {
+        			main   = lg.newImage('res/images/entities/hero_sword.png'),
+        			attack = lg.newImage('res/images/entities/hero_sword_attack.png'),
+        		},
 				animation = {
-					idle   = { width = 50,  height = 48, frames = { { 1, 3, 1, 5 } }, fps = 3 },
-					jump   = { width = 50,  height = 48, frames = { { 5, 1, 5, 4 } }, total = 1 },
-					fall   = { width = 50,  height = 48, frames = { { 5, 4, 5, 4 } }, total = 1 },
-					crouch = { width = 50,  height = 48, frames = { { 5, 5, 5, 5 } }, oy = 8, total = 1 },
-					walk   = { width = 50,  height = 48, frames = { { 3, 1, 3, 7 } } },
-					run    = { width = 50,  height = 48, frames = { { 4, 1, 4, 7 } } },
-					roll   = { width = 50,  height = 48, frames = { { 7, 1, 7, 7 } }, oy = 8, total = 1 },
-					attack = { width = 100, height = 56, frames = { { 9, 1, 9, 7 } }, fps = 24, ox = -8, oy = 32, total = 1 },
+					dash   = { sheet = 'main', width = 50,  height = 48, frames = {{1,1,1,3}}},
+					die    = { sheet = 'main', width = 50,  height = 48, frames = {{1,4,5,7}}, total = 1 },
+					fall   = { sheet = 'main', width = 50,  height = 48, frames = {{1,8,1,10}, { 2, 1, 2, 2 } }, total = 1 },
+					hit    = { sheet = 'main', width = 50,  height = 48, frames = {{2,3,2,6}}, total = 1 },
+					idle   = { sheet = 'main', width = 50,  height = 48, frames = {{2,6,2,7}}, fps = 3 },
+					jump   = { sheet = 'main', width = 50,  height = 48, frames = {{3,4,3,9}}, total = 1 },
+					crouch = { sheet = 'main', width = 50,  height = 48, frames = {{3,9,3,9}}, oy = 8, total = 1 },
+					walk   = { sheet = 'main', width = 50,  height = 48, frames = {{5,8,5,10},{6,1,6,3}}},
+					roll   = { sheet = 'main', width = 50,  height = 48, frames = {{4,2,4,7}}, oy = 8, total = 1 },
+					-- attacks
+					attack = { sheet = 'attack', width = 100, height = 65, frames = {{1,1,1,5},{2,1,2,2}}, ox=-12, oy=10, total=1 },
+					thrust = { sheet = 'attack', width = 100, height = 65, frames = {{2,2,2,5},{3,1,3,3}}, ox=-12, oy=10, total=1 },
+				}
+        	},
+        	skeleton = {
+        		sheet = {
+        			main   = lg.newImage('res/images/entities/skeleton.png'),
+        			attack = lg.newImage('res/images/entities/skeleton_attacks.png'),
+        		},
+        		animation = {
+					idle   = { sheet = 'main', width = 50,  height = 48, frames = { { 3, 3, 3, 6 } }, fps = 3 },
+					jump   = { sheet = 'main', width = 50,  height = 48, frames = { { 2, 8, 5, 11 }, { 3, 1, 3, 3 } }, total = 1 },
+					crouch = { sheet = 'main', width = 50,  height = 48, frames = { { 3, 2, 3, 2 } }, oy = 8, total = 1 },
+					walk   = { sheet = 'main', width = 50,  height = 48, frames = { { 4, 5, 4, 11 } } },
+					run    = { sheet = 'main', width = 50,  height = 48, frames = { { 3, 9, 3, 11 }, { 4, 1, 4, 5 } } },
+					-- attacks
+					attack = { sheet = 'attack', width = 100, height = 65, frames = { { 6, 1, 6, 6 } }, fps = 12, ox = -8, oy = 48, total = 1 },
+					thrust = { sheet = 'attack', width = 100, height = 65, frames = { { 6, 1, 6, 6 } }, fps = 12, ox = -8, oy = 48, total = 1 },
 				}
         	}
         }

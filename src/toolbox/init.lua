@@ -32,3 +32,15 @@ function Util:sign(value)
 
     return 0
 end
+
+-- Create boolean hash table for convenience
+--
+function Util:toBoolean(value)
+	local t = {}
+
+	for __, v in pairs(value) do
+		t[v] = true
+	end
+
+	return t
+end

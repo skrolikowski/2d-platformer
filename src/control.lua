@@ -49,7 +49,8 @@ _Control = {
 		},
 
 		-- Attack Button
-		['A'] = function() Gamestate.current():on('attack') end,
+		['A'] = function() Gamestate.current():on('attack', 'slash')  end,
+		['B'] = function() Gamestate.current():on('attack', 'thrust') end,
 		
 		-- Combo - Roll
 		['D+J'] = function() Gamestate.current():on('roll') end,

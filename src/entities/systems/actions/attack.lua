@@ -21,7 +21,7 @@ function Attack:update(dt)
 	-- attack requested
 	if self:attackRequested() then
 		if self:canAttack() then
-			self.host:dispatch('onAttack', self.host._atkType)
+			self.host:dispatch('onAttack', self.host:atkType())
 		end
 	end
 end
@@ -30,30 +30,20 @@ end
 
 -- Event: onAttack
 --
-function Attack:onAttack(attack)
-	if self.hitbox then
-		self.hitbox:destroy()
-	end
-
-	self.hitbox = new(Entity[attack], {
-		host = self.host,
-		x    = self.host:px() + self.host:width() * 1.25 * self.host:facing(),
-		y    = self.host:py(),
-	})
+function Attack:onAttack(atkType)
+	new(Entity[atkType], { host = self.host })
 end
 
 -- Event: offAttack
 --
 function Attack:offAttack()
-	if self.hitbox then
-		self.hitbox:destroy()
-	end
+	--
 end
 
 -- Event: onAnimationComplete
 --
 function Attack:onAnimationComplete(name)
-	if name == 'attack' then
+	if name == self.host:atkType() then
 		self.host:dispatch('offAttack')
 	end
 end

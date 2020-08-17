@@ -6,6 +6,7 @@ local mapping = {
 	U   = {'w','up'},
 	J   = {'space'},
 	A   = {'f'},
+	B   = {'g'},
 }
 local codes = {}
 

@@ -6,6 +6,10 @@ local Attack = Base:extend()
 function Attack:new(data)
 	Base.new(self, _:merge({
 		mixins = {
+			damage = {
+				src = data.host,
+				dmg = data.dmg or 10
+			},
 			transform = {
 				x = data.x,
 				y = data.y,
@@ -16,13 +20,28 @@ function Attack:new(data)
 	}, data))
 
 	--
-	-- properties
-	self.attacker = data.host -- attacker
+	self:dmgOff()
+
+	-- timer
+	self.timer = Timer.new()
+	self.timer:after(0.25, function() self:dmgOn() end)
+	self.timer:after(0.50, function() self:destroy() end)
 end
+
+-- Tear down
+--
+function Attack:destroy()
+	self.timer:clear()
+	--
+	Base.destroy(self)
+end
+
 
 -- Update
 --
 function Attack:update(dt)
+	self.timer:update(dt)
+	--
 	Base.update(self, dt)
 end
 

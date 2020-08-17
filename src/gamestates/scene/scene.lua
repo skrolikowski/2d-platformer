@@ -40,8 +40,8 @@ function Scene:enter(from, ...)
 	-- self.world:addLayer(self.map.layers['Slopes'])
 
 	--
-	-- spawn player
-	self.focus = new(Entity['player'], {
+	-- spawn hero
+	self.focus = new(Entity['hero'], {
 		x = 2  * Config.world.tileSize,
 		y = 28 * Config.world.tileSize,
 	})

@@ -57,13 +57,13 @@ function Unit:update(dt)
 		self:state('die')
 	--
 	-- Is Taking Damage
-	elseif self.isTakingDamage then
+	elseif self.isTakingHit then
 		self:state('hit')
 	--
 	-- Is Grounded
 	elseif self.isOnGround then
 		if     self.isRolling   then self:state('roll')
-		elseif self.isAttacking then self:state('attack')
+		elseif self.isAttacking then self:state(self:atkType())
 		elseif self.isCrouching then self:state('crouch')
 		elseif self.isDashing   then self:state('dash')
 		elseif _.__abs(vx) > 1  then self:state('walk')
@@ -72,7 +72,7 @@ function Unit:update(dt)
 	else
 	--
 	-- In-Air
-		if     self.isAttacking then self:state('attack')
+		if     self.isAttacking then self:state(self:atkType())
 		elseif self.isDJumping  then self:state('djump')
 		elseif vy < 0           then self:state('jump')
 		else                         self:state('fall')

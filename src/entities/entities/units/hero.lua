@@ -1,12 +1,12 @@
--- Player Entity
+-- Hero Entity
 --
 
-local Base   = require 'src.entities.entities.units.base'
-local Player = Base:extend()
+local Base = require 'src.entities.entities.units.base'
+local Hero = Base:extend()
 
-function Player:new(data)
+function Hero:new(data)
 	Base.new(self, _:merge({
-		name = 'player',
+		name = 'hero',
 		systems = {
 			'animation',
 			'attack',
@@ -19,7 +19,7 @@ function Player:new(data)
 			--
 			jump = { canDouble = true },
 			--
-			hit    = { affects = { 'attack' } },
+			hit    = { },
 			death  = { },
 			revive = { },
 			-- stats
@@ -30,8 +30,8 @@ end
 
 -- Update
 --
-function Player:update(dt)
+function Hero:update(dt)
 	Base.update(self, dt)
 end
 
-return Player
+return Hero

@@ -14,14 +14,15 @@ Components = {
 	-- actions
 	attack = require 'src.entities.components.actions.attack',
 	crouch = require 'src.entities.components.actions.crouch',
+	damage = require 'src.entities.components.actions.damage',
 	dash   = require 'src.entities.components.actions.dash',
 	death  = require 'src.entities.components.actions.death',
+	hit    = require 'src.entities.components.actions.hit',
 	jump   = require 'src.entities.components.actions.jump',
 	revive = require 'src.entities.components.actions.revive',
 	roll   = require 'src.entities.components.actions.roll',
 	-- stats
 	health = require 'src.entities.components.stats.health',
-	damage = require 'src.entities.components.stats.damage',
 }
 
 --
@@ -62,10 +63,11 @@ Systems = {
 
 Entity = {
 	-- units
-	player   = 'src.entities.entities.units.player',
+	hero     = 'src.entities.entities.units.hero',
 	skeleton = 'src.entities.entities.units.skeleton',
 	-- environment
 	bounds = 'src.entities.entities.bounds',
 	-- attacks
-	slash = 'src.entities.entities.attacks.slash'
+	slash  = 'src.entities.entities.attacks.slash',
+	thrust = 'src.entities.entities.attacks.thrust'
 }

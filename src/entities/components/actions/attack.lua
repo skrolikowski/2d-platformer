@@ -11,7 +11,7 @@ function Attack:new(host, data)
 
 	--
 	-- properties
-	self._atkType    = 'slash'
+	self._atkType    = nil
 	self._atkForgive = 0.1
 	self._atkDelay   = data.atkDelay or 0.2
 
@@ -49,13 +49,15 @@ end
 -- Request Attack
 --
 function Attack:onRqAttack(atkType)
-	self._atkType = atkType or 'slash'
+	self._atkType = atkType
 	self.tAtkReq  = self._atkForgive
 end
 
 -- Event: onAttack
 --
-function Attack:onAttack()
+function Attack:onAttack(atkType)
+	self._atkType = atkType
+	--
 	self.isAttacking = true
 	self.tAtkReq     = 0 -- reset
 end
@@ -63,6 +65,8 @@ end
 -- Event: offAttack
 --
 function Attack:offAttack()
+	self._atkType = nil
+	--
 	self.isAttacking  = false
 	self.tAtkCooldown = self._atkDelay
 end
@@ -77,6 +81,16 @@ function Attack:atkDelay(value)
 	end
 
 	self._atkDelay = value
+end
+
+-- Get/set `atkType` value
+--
+function Attack:atkType(value)
+	if value == nil then
+		return self._atkType
+	end
+
+	self._atkType = value
 end
 
 return Attack

@@ -124,7 +124,6 @@ end
 -- query - is this AABB below other?
 --
 function AABB:isBelow(other, oy)
-    print(self.top + (oy or 0), '>', other.bottom)
     return self.top + (oy or 0) > other.bottom
 end
 

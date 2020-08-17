@@ -2,45 +2,50 @@
 --
 Control = {
 	scene = {
-		-- keyboard
 		--
-		keyOn_escape = function()
-			Gamestate.current():onQuit()
-		end,
-		keyDown_w = function()
-			Gamestate.current():onControl('onAxis', { y = -1 })
-		end,
-		keyDown_s = function()
-			Gamestate.current():onControl('onAxis', { y =  1 })
-			Gamestate.current():onControl('onCrouch')
-		end,
-		keyDown_a    = function()
-			Gamestate.current():onControl('onAxis', { x = -1 })
-		end,
-		keyDown_d    = function()
-			Gamestate.current():onControl('onAxis', { x =  1 })
-		end,
-		keyOff_w = function()
-			Gamestate.current():onControl('onAxis', { y =  0 })
-		end,
-		keyOff_s = function()
-			Gamestate.current():onControl('onAxis', { y =  0 })
-			Gamestate.current():onControl('offCrouch')
-		end,
-		keyOff_a = function()
-			Gamestate.current():onControl('onAxis', { x =  0 })
-		end,
-		keyOff_d = function()
-			Gamestate.current():onControl('onAxis', { x =  0 })
-		end,
-		keyOn_f = function()
-			Gamestate.current():onControl('onAttack')
-		end,
-		keyOn_space  = function() Gamestate.current():onControl('onJump')  end,
-		keyOff_space = function() Gamestate.current():onControl('offJump') end,
+		-- Escape
+		esc = function() self:onRqQuit() end,
+		
+		-- Direction - Up
+		U   = {
+			on  = function() self._p:dispatch('onRqAxis', { y = -1 }) end,
+			off = function() self._p:dispatch('onRqAxis', { y =  0 }) end,
+		},
 
-		-- gamepad
-		--
+		-- Direction - Down
+		D   = {
+			on  = {
+				function() self._p:dispatch('onRqAxis', { y =  1 }) end,
+				function() self._p:dispatch('onRqCrouch') end,
+			},
+			off = {
+				function() self._p:dispatch('oRqAxis', { y =  0 }) end,
+				function() self._p:dispatch('offRqCrouch') end,
+			}
+		},
 
+		-- Direction - Left
+		L   = {
+			on  = function() self._p:dispatch('onRqAxis', { x = -1 }) end,
+			off = function() self._p:dispatch('onRqAxis', { x =  0 }) end,
+		},
+		
+		-- Direction - Right
+		R   = {
+			on  = function() self._p:dispatch('onRqAxis', { x =  1 }) end,
+			off = function() self._p:dispatch('onRqAxis', { x =  0 }) end,
+		},
+
+		-- Jump Button
+		J = {
+			on  = function() self._p:dispatch('onRqJump') end,
+			off = function() self._p:dispatch('offRqJump') end,
+		},
+
+		-- Attack Button
+		A = function() self._p:dispatch('onRqAttack') end,
+		
+		-- Combo - Roll
+		['D+J'] = function() self._p:dispatch('onRoll') end,
 	}
 }

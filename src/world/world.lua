@@ -23,12 +23,21 @@ end
 ---- ---- ---- ----
 
 function World:addLayer(layer)
-	for __, obj in pairs(layer.objects) do
-		local name = _.__lower(obj.name ~= '' and obj.name or layer.name)
+	for __, object in pairs(layer.objects) do
+		local name    = _.__lower(object.name ~= '' and object.name or layer.name)
+		local path    = Entity[name]
+		local options = {
+			name  = name,
+			x     = object.x + object.width  / 2,
+			y     = object.y + object.height / 2,
+			w     = object.width,
+			h     = object.height,
+			props = object.properties,
+		}
 
-		self:add(
-			Entities[name](name, obj)
-		)
+		-- self:add(
+			new(path, options)
+		-- )
 	end
 end
 
@@ -42,7 +51,7 @@ end
 
 -- world bounding box
 --
-function World:bounds()
+function World:aabb()
 	if not self.aabb then
 		self.aabb = AABB(0, 0, self:dimension())
 	end
@@ -60,7 +69,7 @@ function World:queryPoint(x, y, cb)
 
 	for __, item in pairs(cell.items) do
 		if not visited[item.id] then
-			if item:bounds():contains(x, y) then
+			if item:aabb():contains(x, y) then
 				cb(item)
 			end
 			--
@@ -78,7 +87,7 @@ function World:querySegment(x1, y1, x2, y2, cb)
 	for __, cell in pairs(cells) do
 		for __, item in pairs(cell.items) do
 			if not visited[item.id] then
-				if Segment(x1, y1, x2, y2):vsAABB(item:bounds()) then
+				if Segment(x1, y1, x2, y2):vsAABB(item:aabb()) then
 					cb(item)
 				end
 
@@ -97,7 +106,7 @@ function World:queryBounds(bounds, cb)
 	for __, cell in pairs(cells) do
 		for __, item in pairs(cell.items) do
 			if not visited[item.id] then
-				if bounds:contains(item:bounds()) then
+				if bounds:contains(item:aabb()) then
 					cb(item)
 				end
 				--
@@ -110,8 +119,8 @@ end
 -- query - get items within view
 --
 function World:queryScreen(cb)
-	-- TODO:
-    return self:queryWorld(cb)
+	local bounds = AABB:fromContainer(0, 0, Config.width, Config.height)
+    return self:queryBounds(bounds, cb)
 end
 
 -- query - get all items in World
@@ -124,7 +133,7 @@ end
 -- query - get all contacts of item moving to dx, dy
 --
 function World:queryContacts(item, dx, dy, cb)
-	local boxStart = item:bounds()
+	local boxStart = item:aabb()
 	local boxEnd   = boxStart:translate(dx, dy)
 	local boxFull  = boxStart:expand(boxEnd)
 	local contacts = {}
@@ -141,10 +150,10 @@ function World:queryContacts(item, dx, dy, cb)
 		end
 	end)
 
-	-- sort by order
-	table.sort(contacts, function(a, b)
-		return a.order < b.order
-	end)
+	-- -- sort by order
+	-- table.sort(contacts, function(a, b)
+	-- 	return a.order < b.order
+	-- end)
 
 	-- make callbacks (in order)
 	if cb then
@@ -169,7 +178,7 @@ function World:add(item)
 
 	--
 	-- add item to cells
-	local bounds = item:bounds()
+	local bounds = item:aabb()
 	local cells  = self.grid:queryCellsInBounds(bounds)
 
 	for __, cell in pairs(cells) do
@@ -183,7 +192,7 @@ end
 --
 function World:remove(item)
 	if self.items[item.id] then
-		local bounds = item:bounds()
+		local bounds = item:aabb()
 		local cells  = self.grid:queryCellsInBounds(bounds)
 
 		-- remove item from cells
@@ -196,21 +205,47 @@ function World:remove(item)
 	end
 end
 
+-- resize item; keeps base position
+--
+function World:resizeItem(item, data)
+	local ow = item._width
+	local oh = item._height
+	local nw = data.w or ow
+	local nh = data.h or oh
+
+	if ow ~= nw or oh ~= nh then
+		self:update(item, {
+			x = item._pos.x + (ow - nw) * 0.5,
+			y = item._pos.y + (oh - nh) * 0.5,
+			w = nw,
+			h = nh
+		})
+	end
+end
+
 -- update item pos/dimensions in world
 --
-function World:update(item, cx, cy, w, h)
-	if item:px() ~= cx or item:py() ~= cy then
-		--
+function World:update(item, data)
+	-- old values
+	local _x, _y = item._pos.x, item._pos.y
+	local _w, _h = item._width, item._height
+	-- new values
+	local nx = data.x or _x
+	local ny = data.y or _y
+	local nw = data.w or _w
+	local nh = data.h or _h
+
+	if _x ~= nx or _y ~= ny or
+	   _w ~= nw or _h ~= nh
+	then
 		-- remove
 		self:remove(item)
 
-		local _w, _h = item:dimensions()
-		--
-		-- update position/dimensions
-		item._pos.x  = cx
-		item._pos.y  = cy
-		item._width  = w or _w
-		item._height = h or _h
+		-- update
+		item:pos({ x = nx, y = ny })
+		item:width(nw)
+		item:height(nh)
+		item:aabb(AABB:fromCenter(nx, ny, nw, nh))
 
 		-- re-add
 		self:add(item)
@@ -220,22 +255,22 @@ end
 -- move item in world to target position
 --
 function World:move(item, nextPos)
-	local cx, cy   = item:center()
-	local dx, dy   = nextPos.x - cx, nextPos.y - cy
-	local continue = true
+	local cx, cy = item:center()
+	local dx, dy = nextPos.x - cx, nextPos.y - cy
 
-	if cx ~= tx or cy ~= ty then
+	if dx ~= 0 or dy ~= 0 then
 		self:queryContacts(item, dx, dy, function(con)
-			if continue ~= false then
-				continue = con.other:resolve(con, nextPos)
-				
-				-- notify item
-				item:onContact(con)
-			end
+			con.other:dispatch('onResolve', con, nextPos)
+			con.other:dispatch('onContact', con, item)
+			--
+			item:dispatch('onContact', con, con.other)
 		end)
 
 		-- update position
-		self:update(item, nextPos:unpack())
+		self:update(item, {
+			x = nextPos.x,
+			y = nextPos.y
+		})
 	end
 end
 

@@ -54,7 +54,7 @@ end
 
 -- Find bounds of both points of segment.
 --
-function Segment:bounds()
+function Segment:aabb()
     return AABB(
         _.__min(self.p1.x, self.p2.x),  -- left
         _.__min(self.p1.y, self.p2.y),  -- top

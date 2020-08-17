@@ -7,19 +7,14 @@ function Contact:new(item, other)
 	self.item  = item
 	self.other = other
 	self.order = self.other.order
-
-	-- save bounds
-	--  for easy access
-	self.bb1 = item:bounds()
-	self.bb2 = other:bounds()
 end
 
 -- Test for contact!
--- bb1 (dx, dy) => bb2
+-- aabb#1 (dx, dy) => aabb#2
 --
 function Contact:project(dx, dy)
-	local nextBB = self.bb1:translate(dx, dy)
-	local px, py = nextBB:project(self.bb2)
+	local nextBB = self.item:aabb():translate(dx, dy)
+	local px, py = nextBB:project(self.other:aabb())
 
 	if px == 0 and py == 0 then
 		return false
@@ -35,13 +30,8 @@ end
 -- Adjust target position so no overlap occurs.
 --
 function Contact:adjust(target)
-	if self.item:onLedge() then
-		target.x = target.x + self.proj.x
-		target.y = self.item.pos.y + (self.bb2.top - self.bb1.top)
-	else
-		target.x = target.x + self.proj.x
-		target.y = target.y + self.proj.y
-	end
+	target.x = target.x + self.proj.x
+	target.y = target.y + self.proj.y
 
 	return target
 end

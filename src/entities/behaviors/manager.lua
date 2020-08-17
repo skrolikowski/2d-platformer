@@ -6,92 +6,59 @@ local Manager = Modern:extend()
 
 -- New
 --
-function Manager:new(host)
+function Manager:new(host, items)
 	self.host  = host
 	self.items = {}
 	self.timer = Timer.new()
+
+	--
+	self:add(items or {})
 end
 
 -- Teardown
 --
 function Manager:destroy()
 	self.timer:clear()
+	--
 	self:clear()
 end
 
+-- Dispatch events
+--
+function Manager:dispatch(event, ...)
+	for __, item in pairs(self.items) do
+		if item[event] then
+			item[event](item, ...)
+		end
+	end
+end
+
 -- Update
--- passthru
 --
 function Manager:update(dt)
 	self.timer:update(dt)
+
 	--
-	for __, behavior in pairs(self.items) do
-		if behavior:update(dt) ~= true then
-			return
+	local aborted = false
+
+	for __, item in pairs(self.items) do
+		if not aborted then
+		--
+		-- execute, on pass..
+			if item:pass() then
+				aborted = (item:execute() == true)
+			end
+		else
+		--
+		-- clear aborted items..
+			item:clear()
 		end
 	end
 end
 
 ---- ---- ---- ----
 
--- Event: onContact
--- passthru
---
-function Manager:onContact(con)
-	for __, behavior in pairs(self.items) do
-		if behavior.onContact then
-			behavior:onContact(con)
-		end
-	end
-end
-
--- Event: onRangeContact
--- passthru
---
-function Manager:onRangeContact(other)
-	for __, behavior in pairs(self.items) do
-		if behavior.onRangeContact then
-			behavior:onRangeContact(other)
-		end
-	end
-end
-
--- Event: offRangeContact
--- passthru
---
-function Manager:offRangeContact(other)
-	for __, behavior in pairs(self.items) do
-		if behavior.offRangeContact then
-			behavior:offRangeContact(other)
-		end
-	end
-end
-
--- Event: onSightContact
--- passthru
---
-function Manager:onSightContact(other)
-	for __, behavior in pairs(self.items) do
-		if behavior.onSightContact then
-			behavior:onSightContact(other)
-		end
-	end
-end
-
--- Event: offSightContact
--- passthru
---
-function Manager:offSightContact(other)
-	for __, behavior in pairs(self.items) do
-		if behavior.offSightContact then
-			behavior:offSightContact(other)
-		end
-	end
-end
-
----- ---- ---- ----
-
--- Set (clearing existing behaviors)
+-- Set (clearing existing items)
 --
 function Manager:set(...)
 	self:clear():add(...)
@@ -99,25 +66,41 @@ function Manager:set(...)
 	return self
 end
 
+-- Has item with `name`?
+--
+function Manager:has(name)
+	return _:find(self.items, function(v, k)
+		return v.name == name
+	end) ~= nil
+end
 
--- Clear existing behaviors
+-- Clear existing items
 --
 function Manager:clear()
 	for i = #self.items, 1, -1 do
-		self.items[i]:destroy()
-
+		if self.items[i].destroy then
+			self.items[i]:destroy()
+		end
+		
 		table.remove(self.items, i)
 	end
 
 	return self
 end
 
--- Add to existing behaviors
+-- Add to existing items
 --
-function Manager:add(...)
-	for __, name in pairs({...}) do
-		if Behaviors[name] then
-			table.insert(self.items, Behaviors[name](self))
+function Manager:add(items)
+	local name, args
+
+	for __, item in pairs(items) do
+		name = item[1]
+		args = item[2] or {}
+
+		if not self:has(name) then
+			assert(Behaviors[name] ~= nil, "Behavior `"..name.."` does not exist.")
+		
+			table.insert(self.items, Behaviors[name](self, args))
 		end
 	end
 

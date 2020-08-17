@@ -1,27 +1,24 @@
 -- Scene - Gameplay
 --
-
 local Base  = require 'src.gamestates.gamestate'
 local Scene = Base:extend()
+
+local dispatch = function(obj, name, ...)
+	return obj:dispatch(name, ...)
+end
 
 -- Event: onLoad
 --
 function Scene:init(data)
-	Base.init(self, _:merge(data, {}))
-	--
+	Base.init(self, {
+		controls = Control['scene']
+	})
 end
 
 -- Tear down
 --
 function Scene:destroy()
-	self:unbindControls({
-		'onAxis',
-		'onAttack',
-		'onCrouch',
-		'offCrouch',
-		'onJump',
-		'offJump',
-	})
+	Base.destroy(self)
 	--
 	self.camera:destroy()
 	self.world:destroy()
@@ -40,49 +37,31 @@ function Scene:enter(from, ...)
 	self.world = World(self)
 	self.world:addLayer(self.map.layers['Bounds'])
 	-- self.world:addLayer(self.map.layers['Slopes'])
-	
+
 	--
 	-- spawn player
-	self.player = Entities['kinematic']('player',
-		{
-			x      = self.settings['col'] * Config.world.tileSize,
-			y      = self.settings['row'] * Config.world.tileSize,
-			width  = 16,
-			height = 32
-		},
-		Components['detection'](),
-		Components['contact'](),
-		Components['attack'](),
-		Components['crouch'](),
-		Components['roll'](),
-		Components['move'](),
-		Components['jump'](),
-		Components['gravity'](),
-		Components['state'](),
-		Components['animation']()
-	)
-	self.player:behavior():set('attack', 'patrol')
-	self.world:add(self.player)
+	self._p = new(Entity['player'], {
+		x = 2  * Config.world.tileSize,
+		y = 28 * Config.world.tileSize,
+	})
+
+	--[[
+		-- Enemies
+		-- ----
+		-- Skeleton
+		new(Entity['skeleton'], {
+			x = 10 * Config.world.tileSize,
+			y = 28 * Config.world.tileSize,
+		})
+	]]--
 
 	--
 	-- camera
-	-- self.focus  = self.player
 	self.camera = Camera(
 		Config.world.tileSize * (self.settings['col'] or 0),
 		Config.world.tileSize * (self.settings['row'] or 0),
 		Config.camera.scale or 1
 	)
-
-	-- controls
-	self:registerControls('scene')
-	self:bindControls({
-		onAxis    = function(...) self.player:onRequestAxis(...)    end,
-		onAttack  = function(...) self.player:onRequestAttack(...)  end,
-		onCrouch  = function(...) self.player:onRequestCrouch(...)  end,
-		offCrouch = function(...) self.player:offRequestCrouch(...) end,
-		onJump    = function(...) self.player:onRequestJump(...)    end,
-		offJump   = function(...) self.player:offRequestJump(...)   end,
-	})
 
 	-- flags
 	self.isPaused = false
@@ -102,16 +81,22 @@ end
 
 ---- ---- ---- ----
 
+-- Event: onRqQuit
+--
+function Scene:onRqQuit()
+	love.event.quit()
+end
+
+---- ---- ---- ----
+
 -- Update
 --
 function Scene:update(dt)
-	self.camera:lookAt(self.player:center())
+	self.camera:lookAt(self._p:center())
 
 	--
 	self.world:queryWorld(function(item)
-		if item._bodyType == 'kinematic' then
-			item:update(dt)
-		end
+		item:update(dt)
 	end)
 	--
     Base.update(self, dt)
@@ -148,18 +133,18 @@ function Scene:loadMap()
 	--
 	self.background = lg.newCanvas(self.width, self.height)
     lg.setCanvas(self.background)
-	    self.map:drawTileLayer('Background')
-	    self.map:drawTileLayer('Decoratives (B1)')
-	    self.map:drawTileLayer('Decoratives (B2)')
-	    self.map:drawTileLayer('Decoratives (B3)')
+	    -- self.map:drawTileLayer('Background')
+	    -- self.map:drawTileLayer('Decoratives (B1)')
+	    -- self.map:drawTileLayer('Decoratives (B2)')
+	    -- self.map:drawTileLayer('Decoratives (B3)')
 	    self.map:drawTileLayer('Platform')
     lg.setCanvas()
 
     --
     self.foreground = lg.newCanvas(self.width, self.height)
     lg.setCanvas(self.foreground)
-    	self.map:drawTileLayer('Decoratives (F1)')
-	    self.map:drawTileLayer('Decoratives (F2)')
+    	-- self.map:drawTileLayer('Decoratives (F1)')
+	    -- self.map:drawTileLayer('Decoratives (F2)')
     lg.setCanvas()
 end
 

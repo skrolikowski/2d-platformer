@@ -2,6 +2,21 @@ package.path = package.path .. ";vendor/?.lua;vendor/?/init.lua"
 require 'lua-lander'
 --
 
+function new(name, ...)
+    local path = LUA_PATH and LUA_PATH or os.getenv "LUA_PATH" or "./?.lua"
+    local name = _.__gsub(name, "%p+", "/")
+
+    for path in string.gfind(path, '[^;]+') do
+        path = _.__gsub(path, '?', name)
+
+        if loadfile(path) then
+            return dofile(path)(...)
+        end
+    end
+    
+    error('No such module exists: ' .. name)
+end
+
 function love.conf(t)
     io.stdout:setvbuf('no')
 

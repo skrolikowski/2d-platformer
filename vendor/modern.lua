@@ -31,30 +31,18 @@
 local __addMixin = function(obj, mixin)
     assert(mixin.__name ~= nil, "Please make sure your table has a `__name` property (e.g. `{ __name = 'Example' }`)")
 
-    -- link Modules..
-    obj.__mixins[mixin.__name] = mixin
+    table.insert(obj.__mixins, mixin)
     mixin.__module = obj
 end
 
 local __removeMixin = function(obj, mixin)
     assert(mixin.__name ~= nil, "Please make sure your table has a `__name` property (e.g. `{ __name = 'Example' }`)")
 
-    -- unlink Modules..
-    obj.__mixins[mixin.__name] = nil
-end
-
---[[
-    Get mixin by name, included in this Module.
-    If not found, will error out.
-
-    @internal
-    @param   Module(obj)  - current Module
-    @param   Module(key)  - mixin to add
-    @return  void
-]]--
-local __getMixin = function(obj, mixinName)
-    return obj.__mixins[mixinName] or
-           error('Mixin with name `' .. mixinName .. '` does not exist.')
+    for idx, val in ipairs(obj.__mixins) do
+        if mixin.__name == val.__name then
+            obj.__mixins[idx] = nil
+        end
+    end
 end
 
 --[[
@@ -263,25 +251,21 @@ end
 --[[
     Add additional mixins to Module.
 
-    @param  table(...) - `Mixins`
+    @param  table
     @return void
 ]]--
-function Modern:addMixins(...)
-    table.foreach({...}, function(_, mixin)
-        __addMixin(self, mixin)
-    end)
+function Modern:addMixin(mixin)
+    __addMixin(self, mixin)
 end
 
 --[[
     Remove existing mixins from Module.
 
-    @param  table(...)
+    @param  string
     @return void
 ]]--
-function Modern:removeMixins(...)
-    table.foreach({...}, function(_, name)
-        __removeMixin(self, __getMixin(self, name))
-    end)
+function Modern:removeMixin(name)
+    __removeMixin(self, __getMixin(self, name))
 end
 
 --[[

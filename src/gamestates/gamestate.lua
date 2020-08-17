@@ -5,13 +5,17 @@ local Modern    = require 'modern'
 local Gamestate = Modern:extend()
 
 function Gamestate:init(data)
-	self.id    = data.id   or Util:uuid()
-	self.name  = data.name or 'scene'
-	self.timer = Timer.new()
+	self.id       = data.id   or Util:uuid()
+	self.name     = data.name or 'scene'
+	self.timer    = Timer.new()
+	self.controls = Control(data.controls or {})
+end
 
-	-- controls
-	self.control  = nil
-	self.controls = {}
+-- Tear down
+--
+function Gamestate:destroy()
+	self.controls:destroy()
+	self.timer:clear()
 end
 
 -- Event: onEnter
@@ -37,22 +41,16 @@ end
 
 ---- ---- ---- ----
 
--- Event: onMousePress
+-- Event: onPressed
 --
-function Gamestate:onPress()
-	--
+function Gamestate:onPressed(...)
+	self.controls:onPressed(...)
 end
 
--- Event: onMouseMove
+-- Event: onReleased
 --
-function Gamestate:onMove()
-	--
-end
-
--- Event: onMouseRelease
---
-function Gamestate:onRelease()
-	--
+function Gamestate:onReleased(...)
+	self.controls:onReleased(...)
 end
 
 -- Event: onControl (callbacks)
@@ -69,41 +67,51 @@ end
 
 ---- ---- ---- ----
 
--- Register control callbacks
---
-function Gamestate:bindControls(...)
-	for name, callback in pairs(...) do
-		self.controls[name] = callback
-	end
-end
+-- -- Unregister control callbacks
+-- --
+-- function Gamestate:unbindControls()
+-- 	for name, __ in pairs(self.controls) do
+-- 		self.controls[name] = nil
+-- 	end
+-- end
 
--- Set controls
---
-function Gamestate:registerControls(name)
-	if self.control ~= name then
-		-- unregister
-		if self.control ~= nil then 
-			for code, __ in pairs(Control[self.control]) do
-				_:off(code)
-			end
-		end
+-- -- Register control callbacks
+-- --
+-- function Gamestate:bindControls(...)
+-- 	for name, callback in pairs(...) do
+-- 		self.controls[name] = callback
+-- 		_:on(code, func)
+-- 	end
+-- end
 
-		-- set
-		self.control = name
+-- -- Set controls
+-- --
+-- function Gamestate:registerControls(name)
+-- 	if self.control ~= name then
+-- 		-- unregister
+-- 		if self.control ~= nil then 
+-- 			for code, __ in pairs(Control[self.control]) do
+-- 				_:off(code)
+-- 			end
+-- 		end
 
-		-- register
-		for code, func in pairs(Control[self.control]) do
-			_:on(code, func)
-		end
-	end
-end
+-- 		-- set
+-- 		self.control = name
+
+-- 		-- register
+-- 		for code, func in pairs(Control[self.control]) do
+-- 			_:on(code, func)
+-- 		end
+-- 	end
+-- end
 
 ---- ---- ---- ----
 
 -- Update
 --
 function Gamestate:update(dt)
-	self.timer:update()
+	self.controls:update(dt)
+	self.timer:update(dt)
 end
 
 -- Draw

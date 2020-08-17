@@ -5,6 +5,9 @@ Util = {}
 -- vendor
 pprint = require 'vendor.pprint.pprint'
 
+-- controls
+Control = require 'src.toolbox.controls.control'
+
 -- math
 AABB    = require 'src.toolbox.math.aabb'
 Vec2    = require 'src.toolbox.math.vec2'

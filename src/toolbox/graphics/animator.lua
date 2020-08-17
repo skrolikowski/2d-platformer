@@ -25,16 +25,17 @@ function Animator:addAnimation(name, options)
 	end
 
 	self.animations[name] = {
-		name   = name,
-		image  = image,
-		width  = width,
-		height = height,
-		frames = frames,
-		ox     = options.ox or 0,
-		oy     = options.oy or 0,
-		fps    = options.fps   or 10,
-		total  = options.total or nil,
-		after  = options.after or function() end
+		name    = name,
+		image   = image,
+		width   = width,
+		height  = height,
+		frames  = frames,
+		reverse = options.reverse or false,
+		ox      = options.ox or 0,
+		oy      = options.oy or 0,
+		fps     = options.fps   or 10,
+		total   = options.total or nil,
+		after   = options.after or function() end
 	}
 
 	if not self.current then
@@ -101,15 +102,6 @@ function Animator:offsets()
 	return 0, 0
 end
 
--- Restart animation
-function Animator:restart()
-	if self.current then
-		self.current.frame   = 1
-		self.current.count   = 0
-		self.current.playing = true
-	end
-end
-
 -- Switch to different animation
 --
 function Animator:switchTo(name, frame)
@@ -119,7 +111,12 @@ function Animator:switchTo(name, frame)
 
 			-- setup
 			if self.current.frames then
-				self.current.frame   = frame or 1
+				if self.current.reverse then
+					self.current.frame = frame or #self.current.frames
+				else
+					self.current.frame = frame or 1
+				end
+
 				self.current.timer   = 1 / self.current.fps
 				self.current.count   = 0
 				self.current.playing = true
@@ -130,25 +127,77 @@ function Animator:switchTo(name, frame)
 	end
 end
 
+-- Play
+--
+function Animator:play(current)
+	current.playing = true
+end
+
+-- Play
+--
+function Animator:replay(current)
+	current.playing = true
+	current.frame   = current.reverse and #current.frames or 1
+end
+
+-- Move to next frame
+--
+function Animator:roll(current)
+	if current.reverse then
+		self:prev(current)
+	else
+		self:next(current)
+	end
+end
+
+function Animator:pause(current)
+	current.playing = false
+end
+
+-- Move to prev frame in sequence
+--
+function Animator:prev(current)
+	current.frame = current.frame - 1
+	current.frame = _.__max(current.frame, 1)
+end
+
+-- Move to next frame in sequence
+--
+function Animator:next(current)
+	current.frame = current.frame + 1
+	current.frame = _.__min(current.frame, #current.frames)
+end
+
+-- Reached end of animation?
+--
+function Animator:isEndOfAnimation(current)
+	return current.frame == (current.reverse and 1 or #current.frames)
+end
+
+-- Reached end of animation sequence?
+--
+function Animator:isEndOfSequence(current)
+	return current.total == nil or
+	       current.count < current.total
+end
+
 -- Toggle next frame (if applicable)
 --
-function Animator:nextFrame()
-	self.current.frame = self.current.frame + 1
-	self.current.frame = _.__min(self.current.frame, #self.current.frames)
-
+function Animator:sequence()
+	self:roll(self.current)
+	
 	-- end of animation?
-	if self.current.frame == #self.current.frames then
+	if self:isEndOfAnimation(self.current) then
 		self.current.count = self.current.count + 1
 
-		-- loop animation?
-		if self.current.total == nil or self.current.count < self.current.total then
-			self.current.playing = true
-			self.current.frame   = 1
+		-- end of sequence?
+		if self:isEndOfSequence(self.current) then
+			self:replay(self.current)
 		else
-			self.current.playing = false
+			self:pause(self.current)
 		end
 
-		-- trigger after animation callback
+		-- after callback
 		self.current:after()
 	end
 end
@@ -161,7 +210,7 @@ function Animator:update(dt)
 
 		if self.current.timer <= 0 then
 			self.current.timer = 1 / self.current.fps
-			self:nextFrame()
+			self:sequence()
 		end
 	end
 end

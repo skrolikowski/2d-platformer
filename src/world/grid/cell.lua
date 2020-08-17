@@ -68,7 +68,7 @@ end
 
 -- cell bounding box
 --
-function Cell:bounds()
+function Cell:aabb()
 	if not self.aabb then
 		local x, y = self:position()
 		local w, h = self:dimensions()
@@ -82,7 +82,7 @@ end
 -- Cell dimensions
 --
 function Cell:container()
-	return self:bounds():container()
+	return self:aabb():container()
 end
 
 ---- ---- ---- ----

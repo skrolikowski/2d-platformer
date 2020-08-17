@@ -42,12 +42,12 @@ function Grid:dimensions()
 	return self.world.width, self.world.height
 end
 
-function Grid:bounds()
-	if not self.aabb then
-		self.aabb = AABB:fromContainer(0, 0, self:dimensions())
+function Grid:aabb()
+	if not self._aabb then
+		self._aabb = AABB:fromContainer(0, 0, self:dimensions())
 	end
 
-	return self.aabb
+	return self._aabb
 end
 
 ---- ---- ---- ----
@@ -84,7 +84,7 @@ end
 -- Query - get cells in bounds
 --
 function Grid:queryCellsInBounds(bounds)
-	local l, t, r, b = self:bounds():clamp(bounds):unpack()
+	local l, t, r, b = self:aabb():clamp(bounds):unpack()
 	local r1, c1     = self:queryRowColAtPoint(l, t)
 	local r2, c2     = self:queryRowColAtPoint(r-0.01, b-0.01)
 	local cells      = {}

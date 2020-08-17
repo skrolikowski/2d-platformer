@@ -73,6 +73,7 @@ function Unit:update(dt)
 	--
 	-- In-Air
 		if     self.isAttacking then self:state('attack')
+		elseif self.isDJumping  then self:state('djump')
 		elseif vy < 0           then self:state('jump')
 		else                         self:state('fall')
 		end

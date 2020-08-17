@@ -8,40 +8,65 @@ local Jump = Base:extend()
 --
 function Jump:new(host, data)
 	Base.new(self, host, { 'jump', 'velocity' })
+	
 	--
+	-- properties
+	self.canDouble = data.canDouble or false
 end
 
 -- Update
 --
 function Jump:update(dt)
+	--
+	-- onTerminate..
 	if self.host.jumpTerm then
 		if self.host:vy() < -self.host.jumpSpeed * 0.5 then
-			self.host:offJump()
 			self.host:vy(-self.host.jumpSpeed * 0.5)
 		end
 	end
 
-
+	-- onRequest..
 	if self:jumpRequested() then
-		if self:canJump() then
+		if self:canDoubleJump() then
+		--
+		-- double
+			self.host:onJump()
+			self.host:vy(-self.host.jumpSpeed)
+		elseif self:canJump() then
+		--
+		-- single
 			self.host:onJump()
 			self.host:vy(self.host:vy() - self.host.jumpSpeed)
+		end
+	end
+
+	if self.host.isJumping then
+	--
+	-- disable `isJumping` flag?
+		if self.host:vy() > self.host:spdMax() then
+			self.host:offJump()
 		end
 	end
 end
 
 ---- ---- ---- ----
 
--- Can perform jump.
+-- Can perform jump
 --
 function Jump:canJump()
-	local isOnGround   = self.host.isOnGround or self.host.tLastGround < 0.1
-	local isCrouching  = self.host.isCrouching
-	local reachedLimit = self.host.jumpNum >= self.host.jumpMax
+	local isOnGround  = self.host.isOnGround or self.host.tLastGround < 0.1
+	local isCrouching = self.host.isCrouching
 
 	return isOnGround and
-	       not isCrouching and
-	       not reachedLimit
+	       not isCrouching
+end
+
+-- Can perform double jump
+--
+function Jump:canDoubleJump()
+	return not self.host.isDJumping and
+	       self.host.isJumping and
+	       self.canDouble
 end
 
 -- Has jump been requested?

@@ -13,10 +13,11 @@ function Player:new(data)
 			'crouch',
 			'dash',
 			'gravity',
-			'jump',
 			'move',
 			'proximity',
 			'roll',
+			--
+			jump = { canDouble = true },
 			--
 			hit    = { affects = { 'attack' } },
 			death  = { },

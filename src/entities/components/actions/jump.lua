@@ -18,13 +18,12 @@ function Jump:new(host, data)
 	self.host = host
 
 	-- properties
-	self.jumpNum     = 0
-	self.jumpMax     = 1
 	self.jumpSpeed   = initVel
 	self.jumpForgive = 0.15
 
 	-- flags
 	self.isJumping  = false
+	self.isDJumping = false
 	self.isJumpTerm = false
 
 	-- timers
@@ -38,30 +37,33 @@ end
 function Jump:update(dt)
 	self.tJumpReq    = self.tJumpReq > 0 and self.tJumpReq - dt or 0
 	self.tLastGround = self.tLastGround + dt
-	self.isJumping   = self.jumpNum > 0
 end
 
 -- Event: onContact
 --
 function Jump:onContact(con)
 	if con.norm.y == -1 then
-		self.jumpNum     = _.__max(0, self.jumpNum - 1)
 		self.tLastGround = 0
+		--
+		self:offJump()
 	end
 end
 
 -- Event: onJump
 --
 function Jump:onJump()
-	self.tJumpReq = 0  -- reset
-	self.jumpNum  = self.jumpNum + 1
-	self.jumpTerm = false
+	self.tJumpReq   = 0  -- reset
+	self.isDJumping = self.isJumping
+	self.isJumping  = true
+	self.jumpTerm   = false
 end
 
 -- Event: offJump
 --
 function Jump:offJump()
-	--
+	self.isDJumping = false
+	self.isJumping  = false
+	self.jumpTerm   = false
 end
 
 -- Request jump.

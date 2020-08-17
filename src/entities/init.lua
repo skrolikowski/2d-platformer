@@ -4,21 +4,24 @@
 --
 -- Components
 Components = {
+	-- general
 	animation = require 'src.entities.components.animation',
-	attack    = require 'src.entities.components.attack',
 	axis      = require 'src.entities.components.axis',
-	crouch    = require 'src.entities.components.crouch',
-	dash      = require 'src.entities.components.dash',
-	damage    = require 'src.entities.components.damage',
-	death     = require 'src.entities.components.death',
-	health    = require 'src.entities.components.health',
-	jump      = require 'src.entities.components.jump',
 	proximity = require 'src.entities.components.proximity',
 	target    = require 'src.entities.components.target',
 	transform = require 'src.entities.components.transform',
-	revive    = require 'src.entities.components.revive',
-	roll      = require 'src.entities.components.roll',
 	velocity  = require 'src.entities.components.velocity',
+	-- actions
+	attack = require 'src.entities.components.actions.attack',
+	crouch = require 'src.entities.components.actions.crouch',
+	dash   = require 'src.entities.components.actions.dash',
+	death  = require 'src.entities.components.actions.death',
+	jump   = require 'src.entities.components.actions.jump',
+	revive = require 'src.entities.components.actions.revive',
+	roll   = require 'src.entities.components.actions.roll',
+	-- stats
+	health = require 'src.entities.components.stats.health',
+	damage = require 'src.entities.components.stats.damage',
 }
 
 --

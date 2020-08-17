@@ -24,6 +24,7 @@ Config = {
 					hit    = { sheet = 'main', width = 50,  height = 48, frames = {{2,3,2,6}}, fps = 5, total = 1 },
 					idle   = { sheet = 'main', width = 50,  height = 48, frames = {{2,6,2,7}}, fps = 5 },
 					jump   = { sheet = 'main', width = 50,  height = 48, frames = {{3,4,3,9}}, total = 1 },
+					djump  = { sheet = 'main', width = 50,  height = 48, frames = {{4,4,4,7}}, total = 1 },
 					crouch = { sheet = 'main', width = 50,  height = 48, frames = {{4,7,4,7}}, oy = 8, total = 1 },
 					roll   = { sheet = 'main', width = 50,  height = 48, frames = {{4,2,4,7}}, oy = 8, total = 1 },
 					-- attacks

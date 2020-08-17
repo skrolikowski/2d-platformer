@@ -11,7 +11,8 @@ end
 --
 function Scene:init(data)
 	Base.init(self, {
-		controls = Control['scene']
+		name     = 'scene',
+		controls = _Control['scene']
 	})
 end
 
@@ -40,7 +41,7 @@ function Scene:enter(from, ...)
 
 	--
 	-- spawn player
-	self._p = new(Entity['player'], {
+	self.focus = new(Entity['player'], {
 		x = 2  * Config.world.tileSize,
 		y = 28 * Config.world.tileSize,
 	})
@@ -81,10 +82,20 @@ end
 
 ---- ---- ---- ----
 
--- Event: onRqQuit
+-- Event: on request
 --
-function Scene:onRqQuit()
-	love.event.quit()
+function Scene:on(name, ...)
+	if self.focus then
+		self.focus:dispatch('onRq' .. _:upperFirst(name), ...)
+	end
+end
+
+-- Event: off request
+--
+function Scene:off(name, ...)
+	if self.focus then
+		self.focus:dispatch('offRq' .. _:upperFirst(name), ...)
+	end
 end
 
 ---- ---- ---- ----
@@ -92,12 +103,16 @@ end
 -- Update
 --
 function Scene:update(dt)
-	self.camera:lookAt(self._p:center())
-
 	--
+	-- camera focus
+	self.camera:lookAt(
+		self.focus:center())
+
+	-- update entities
 	self.world:queryWorld(function(item)
 		item:update(dt)
 	end)
+
 	--
     Base.update(self, dt)
 end
@@ -109,6 +124,7 @@ function Scene:draw()
         lg.setColor(Config.color.white)
         lg.draw(self.background)
 
+        -- draw entities
 		self.world:queryScreen(function(item)
 			item:draw()
 		end)
@@ -116,6 +132,7 @@ function Scene:draw()
 		lg.setColor(Config.color.white)
         lg.draw(self.foreground)
     end)
+    
     --
     Base.draw(self)
 end

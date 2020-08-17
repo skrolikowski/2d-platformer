@@ -16,7 +16,7 @@ Config = {
         			attack = lg.newImage('res/images/entities/hero_sword_attack.png'),
         		},
 				animation = {
-					dash   = { sheet = 'main', width = 50,  height = 48, frames = {{1,1,1,3}}},
+					dash   = { sheet = 'main', width = 50,  height = 48, frames = {{4,8,4,10},{5,1,5,3}}},
 					walk   = { sheet = 'main', width = 50,  height = 48, frames = {{5,8,5,10},{6,1,6,3}}},
 					die    = { sheet = 'main', width = 50,  height = 48, frames = {{1,4,1,7}}, fps = 5, total = 1 },
 					revive = { sheet = 'main', width = 50,  height = 48, frames = {{1,4,1,7}}, reverse=true, fps = 5, total = 1 },

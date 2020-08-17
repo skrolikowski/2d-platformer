@@ -65,6 +65,7 @@ function Unit:update(dt)
 		if     self.isRolling   then self:state('roll')
 		elseif self.isAttacking then self:state('attack')
 		elseif self.isCrouching then self:state('crouch')
+		elseif self.isDashing   then self:state('dash')
 		elseif _.__abs(vx) > 1  then self:state('walk')
 		else                         self:state('idle')
 		end

@@ -11,6 +11,7 @@ function Player:new(data)
 			'animation',
 			'attack',
 			'crouch',
+			'dash',
 			'gravity',
 			'jump',
 			'move',

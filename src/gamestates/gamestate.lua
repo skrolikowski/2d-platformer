@@ -65,6 +65,18 @@ function Gamestate:onQuit()
 	love.event.quit()
 end
 
+-- Event: on request
+--
+function Gamestate:on(name, ...)
+	--
+end
+
+-- Event: off request
+--
+function Gamestate:off(name, ...)
+	--
+end
+
 ---- ---- ---- ----
 
 -- -- Unregister control callbacks

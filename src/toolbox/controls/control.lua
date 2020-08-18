@@ -40,8 +40,9 @@ end
 
 -- Input pressed..
 --
-function Control:onPressed(code)
+function Control:onPressed(code, ...)
 	local name = Codes[code]
+	local args = ...
 
 	if name then
 		self.input:onPressed(name)
@@ -50,11 +51,11 @@ function Control:onPressed(code)
 			if _:isFunction(map.cb) then
 			--
 			-- shortcut - single callback
-				__dispatch(map.cb)
+				__dispatch(map.cb, args)
 			else
 			--
 			-- standard - on callback
-				__dispatch(map.cb.on)
+				__dispatch(map.cb.on, args)
 			end
 		end)
 	end
@@ -62,15 +63,16 @@ end
 
 -- Input released..
 --
-function Control:onReleased(code)
+function Control:onReleased(code, ...)
 	local name = Codes[code]
+	local args = ...
 
 	if name then
 		self.input:onReleased(name)
 		--
-		self.map:onReleased(self.input, function(map)
+		self.map:onReleased(self.input, function(map, args)
 			if not _:isFunction(map.cb) then
-				__dispatch(map.cb.off)
+				__dispatch(map.cb.off, args)
 			end
 		end)
 	end

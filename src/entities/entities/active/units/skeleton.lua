@@ -14,6 +14,7 @@ function Skeleton:new(data)
 			--
 			health = { hp = 25 },
 			move   = { spd = 50 },
+			death  = { },
 			hit    = { delay = 0.25 },
 			regen  = { rate = 1, amt = 1 },
 			revive = { delay = 5 }

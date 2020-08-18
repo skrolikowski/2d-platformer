@@ -45,8 +45,6 @@ end
 -- VX - axis
 --
 function Move:byAxis(axis, vel)
-
-
 	if axis == 0 then
 		-- slow-down
 		vel = _.__abs(vel) > 1 and vel * 0.35 or 0
@@ -108,6 +106,7 @@ function Move:canMoveX()
 	return self.host.isRolling or
 	      (not self.host.isAttacking and
 	       not self.host.isTakingHit and
+	       not self.host.isGuarding and
 	       not self.host.isReviving and
 	       not self.host.isDead and
 	       not self.host.isCrouching)

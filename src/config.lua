@@ -35,8 +35,9 @@ Config = {
 					crouch = { sheet = 'sword', width = 50,  height = 48, frames = {{4,7,4,7}}, oy = 8, total = 1 },
 					roll   = { sheet = 'sword', width = 50,  height = 48, frames = {{4,2,4,7}}, oy = 8, total = 1 },
 					-- attacks
-					slash  = { sheet = 'atk_sword', width = 100, height = 65, frames = {{1,1,1,5},{2,1,2,2}}, fps=12, ox=-12, oy=10, total=1 },
-					thrust = { sheet = 'atk_sword', width = 100, height = 65, frames = {{2,2,2,5},{3,1,3,3}}, fps=12, ox=-12, oy=10, total=1 },
+					aim    = { sheet = 'atk_archer', width = 100, height = 65, frames = {{1,1,1,1}}, ox=-12, oy=10, total=1 },
+					slash  = { sheet = 'atk_sword',  width = 100, height = 65, frames = {{1,1,1,5},{2,1,2,2}}, fps=12, ox=-12, oy=10, total=1 },
+					thrust = { sheet = 'atk_sword',  width = 100, height = 65, frames = {{2,2,2,5},{3,1,3,3}}, fps=12, ox=-12, oy=10, total=1 },
 				}
         	},
         	skeleton = {

@@ -49,12 +49,12 @@ function Scene:enter(from, ...)
 	--[[
 		-- Enemies
 		-- ----
-	]]--
 		-- Skeleton
 		new(Entities['skeleton'], {
 			x = 10 * Config.world.tileSize,
 			y = 28 * Config.world.tileSize,
 		})
+	]]--
 
 	--
 	-- camera

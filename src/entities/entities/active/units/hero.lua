@@ -18,6 +18,7 @@ function Hero:new(data)
 			'roll',
 			--
 			attack = { delay = 0 },
+			range  = {  },
 			jump   = { canDouble = true },
 			--
 			-- hit    = { },

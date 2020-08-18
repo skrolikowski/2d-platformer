@@ -11,7 +11,15 @@ function Regen:new(host, data)
 	
 	--
 	Timer.every(data.rate or 1, function()
-		self.host:increaseHp(data.amt or 1)
+		if self:canHeal() then
+			self.host:increaseHp(data.amt or 1)
+		end
 	end)
 end
+
+function Regen:canHeal()
+	return not self.host.isDead and
+	       not self.host.isReviving
+end
+
 return Regen

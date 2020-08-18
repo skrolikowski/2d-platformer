@@ -68,6 +68,7 @@ function Unit:update(dt)
 	elseif self.isOnGround then
 		if     self.isRolling   then self:state('roll')
 		elseif self.isGuarding  then self:state('guard')
+		elseif self.isRanged    then self:state('aim')
 		elseif self.isAttacking then self:state(self:atkType())
 		elseif self.isCrouching then self:state('crouch')
 		elseif self.isDashing   then self:state('dash')

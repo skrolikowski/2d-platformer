@@ -1,4 +1,4 @@
--- Slash Attack System
+-- Attack System
 --
 
 local Base   = require 'src.entities.systems.base'

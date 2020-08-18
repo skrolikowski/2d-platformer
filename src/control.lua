@@ -4,7 +4,7 @@ _Control = {
 	scene = {
 		--
 		-- Escape
-		esc = function() Gamestate.current():onQuit() end,
+		ESC = function() Gamestate.current():onQuit() end,
 		
 		-- Direction - Up
 		U   = {
@@ -47,6 +47,15 @@ _Control = {
 			on  = function() Gamestate.current():on('jump') end,
 			off = function() Gamestate.current():off('jump') end,
 		},
+
+		-- PROTOTYPE --
+		-- Range Button
+		AL = function(...) Gamestate.current():on('axis', ...) end,
+		R2 = {
+			on  = function() Gamestate.current():on('range')  end,
+			off = function() Gamestate.current():off('range') end,
+		},
+		-- PROTOTYPE --
 
 		-- Attack Button
 		['A'] = function() Gamestate.current():on('attack', 'slash')  end,

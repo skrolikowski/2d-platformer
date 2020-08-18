@@ -25,7 +25,7 @@ end
 function World:addLayer(layer)
 	for __, object in pairs(layer.objects) do
 		local name    = _.__lower(object.name ~= '' and object.name or layer.name)
-		local path    = Entity[name]
+		local path    = Entities[name]
 		local options = {
 			name  = name,
 			x     = object.x + object.width  / 2,
@@ -35,9 +35,7 @@ function World:addLayer(layer)
 			props = object.properties,
 		}
 
-		-- self:add(
-			new(path, options)
-		-- )
+		new(path, options)
 	end
 end
 

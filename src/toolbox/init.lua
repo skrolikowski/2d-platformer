@@ -10,8 +10,9 @@ Control = require 'src.toolbox.controls.control'
 
 -- math
 AABB    = require 'src.toolbox.math.aabb'
-Vec2    = require 'src.toolbox.math.vec2'
+Dice    = require 'src.toolbox.math.dice'
 Segment = require 'src.toolbox.math.segment'
+Vec2    = require 'src.toolbox.math.vec2'
 
 -- graphics
 Animator    = require 'src.toolbox.graphics.animator'
@@ -46,4 +47,36 @@ function Util:toBoolean(value)
 	end
 
 	return t
+end
+
+function Util:buildDir(path, tbl)
+    tbl = tbl or {}
+
+    for __, file in pairs(files) do
+    end
+
+
+    return tbl
+end
+
+function Util:buildDir(path, tbl)
+    local files = lf.getDirectoryItems(path)
+    local info, name
+
+    tbl = tbl or {}
+
+    for __, file in pairs(files) do
+        if not _:startsWith(file, '[.]') then
+            info = lf.getInfo(path .. '/' .. file)
+            name = string.match(file, "([%a|%-_|%d]+)")
+
+            if info.type == 'directory' then
+                tbl = Util:buildDir(path .. '/' .. file, tbl)
+            else
+                tbl[name] = require(path .. '/' .. name)
+            end
+        end
+    end
+
+    return tbl
 end

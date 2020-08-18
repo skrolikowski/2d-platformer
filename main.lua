@@ -45,7 +45,7 @@ end
 -- Update
 --
 function love.update(dt)
-    --
+    Timer.update(dt)
 end
 
 ---- ---- ---- ----

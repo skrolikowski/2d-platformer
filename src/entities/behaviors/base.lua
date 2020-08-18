@@ -7,10 +7,9 @@ local Behavior = Modern:extend()
 -- New
 --
 function Behavior:new(name, manager, systems)
-	self.id    = Util:uuid()
-	self.name  = name or 'behavior'
-	self.host  = manager.host
-	self.timer = manager.timer
+	self.id   = Util:uuid()
+	self.name = name or 'behavior'
+	self.host = manager.host
 
 	--
 	manager.host:addSystems(systems)

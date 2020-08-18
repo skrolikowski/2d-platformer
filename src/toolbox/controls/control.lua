@@ -24,8 +24,7 @@ function Control:new(maps)
 	self.map   = Map(maps)
 
 	-- HOLD
-	-- self.timer = Timer.new()
-	-- self.timer:every(0.25, function()
+	-- Timer.every(0.25, function()
 	-- 	self.input:holding(function(input)
 	-- 		print('hold' .. _:upperFirst(input))
 	-- 		_:dispatch('hold' .. _:upperFirst(act))
@@ -33,16 +32,10 @@ function Control:new(maps)
 	-- end)
 end
 
--- Teardown
---
-function Control:destroy()
-	self.timer:clear()
-end
-
 -- Update
 --
 function Control:update(dt)
-	-- self.timer:update(dt)
+	--
 end
 
 -- Input pressed..

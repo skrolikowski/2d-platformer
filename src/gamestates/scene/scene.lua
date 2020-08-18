@@ -41,7 +41,7 @@ function Scene:enter(from, ...)
 
 	--
 	-- spawn hero
-	self.focus = new(Entity['hero'], {
+	self.focus = new(Entities['hero'], {
 		x = 2  * Config.world.tileSize,
 		y = 28 * Config.world.tileSize,
 	})
@@ -49,12 +49,12 @@ function Scene:enter(from, ...)
 	--[[
 		-- Enemies
 		-- ----
+	]]--
 		-- Skeleton
-		new(Entity['skeleton'], {
+		new(Entities['skeleton'], {
 			x = 10 * Config.world.tileSize,
 			y = 28 * Config.world.tileSize,
 		})
-	]]--
 
 	--
 	-- camera

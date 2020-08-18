@@ -9,7 +9,6 @@ local Manager = Modern:extend()
 function Manager:new(host, items)
 	self.host  = host
 	self.items = {}
-	self.timer = Timer.new()
 
 	--
 	self:add(items or {})
@@ -18,8 +17,6 @@ end
 -- Teardown
 --
 function Manager:destroy()
-	self.timer:clear()
-	--
 	self:clear()
 end
 
@@ -36,9 +33,6 @@ end
 -- Update
 --
 function Manager:update(dt)
-	self.timer:update(dt)
-
-	--
 	local aborted = false
 
 	for __, item in pairs(self.items) do

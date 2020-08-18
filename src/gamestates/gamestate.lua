@@ -7,7 +7,6 @@ local Gamestate = Modern:extend()
 function Gamestate:init(data)
 	self.id       = data.id   or Util:uuid()
 	self.name     = data.name or 'scene'
-	self.timer    = Timer.new()
 	self.controls = Control(data.controls or {})
 end
 
@@ -15,7 +14,6 @@ end
 --
 function Gamestate:destroy()
 	self.controls:destroy()
-	self.timer:clear()
 end
 
 -- Event: onEnter
@@ -123,7 +121,6 @@ end
 --
 function Gamestate:update(dt)
 	self.controls:update(dt)
-	self.timer:update(dt)
 end
 
 -- Draw

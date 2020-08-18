@@ -50,7 +50,10 @@ _Control = {
 
 		-- Attack Button
 		['A'] = function() Gamestate.current():on('attack', 'slash')  end,
-		['B'] = function() Gamestate.current():on('attack', 'thrust') end,
+		['B'] = {
+			on  = function() Gamestate.current():on('guard') end,
+			off = function() Gamestate.current():off('guard') end,
+		},
 		
 		-- Combo - Roll
 		['D+J'] = function() Gamestate.current():on('roll') end,

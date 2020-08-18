@@ -56,6 +56,10 @@ end
 function Dice.Calculate(n, sides, mod)
 	local total = 0
 
+	n     = tonumber(n)
+	sides = tonumber(sides)
+	mod   = tonumber(mod)
+
 	-- adjust
 	n     = _.__floor(n)
 	sides = _:round(sides)
@@ -64,7 +68,7 @@ function Dice.Calculate(n, sides, mod)
 		total = total + _.__random(1, sides)
 	end
 
-	return total + (tonumber(mod) or 0)
+	return total + (mod or 0)
 end
 
 -- Util: weighted dice roll

@@ -33,6 +33,10 @@ end
 -- Collision Resolution
 --
 function Bounds:onResolve(con, nextPos)
+	if con.item.mixins['ghost'] then
+		return
+	end
+
 	if not self:canPassThrough(con.item:aabb()) then
 		con:adjust(nextPos)
 	end

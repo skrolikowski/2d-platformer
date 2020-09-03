@@ -42,6 +42,8 @@ end
 function Roll:canRoll()
 	return self.host.isOnGround  and
 	       self.host.isCrouching and
+	       not self.host.isAiming and
+	       not self.host.isReloading and
 	       not self.host.isRolling
 end
 

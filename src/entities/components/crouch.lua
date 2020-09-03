@@ -16,13 +16,13 @@ end
 
 ---- ---- ---- ----
 
--- Request crouch.
+-- Request crouch
 --
 function Crouch:onRqCrouch()
 	self.isCrouching = true
 end
 
--- Request stand.
+-- Request stand
 --
 function Crouch:offRqCrouch()
 	self.isCrouching = false

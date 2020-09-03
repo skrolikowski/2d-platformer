@@ -13,17 +13,29 @@ function Hero:new(data)
 			'dash',
 			'guard',
 			'gravity',
+			'inventory',
 			'move',
 			'proximity',
 			'roll',
 			--
-			attack = { delay = 0 },
-			range  = {  },
-			jump   = { canDouble = true },
+			aim = {
+				sprite = Animation(Sheet['hero']['aim_arm'])
+					:frames({1,1,1,1})
+					:offset(-16,4)
+					:once()
+					:after(function()
+						self:dispatch('onRqReload')
+					end)
+			},
+			-- reload = {
+			-- 	sprite = Animation(Sheet['hero']['aim_arm'])
+			-- 		:frames({1,1,3,2})
+			-- 		:offset(-16,4)
+			-- 		:once()
+			-- },
 			--
-			-- hit    = { },
-			-- death  = { },
-			-- revive = { },
+			attack  = { delay = 0 },
+			jump    = { canDouble = true },
 			health  = { hp = 50 },
 			stamina = { hp = 50 },
 		}

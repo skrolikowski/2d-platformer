@@ -6,6 +6,9 @@ _Control = {
 		-- Escape
 		ESC = function() Gamestate.current():onQuit() end,
 		
+		-- Direction - Analog
+		AL = function(...) Gamestate.current():on('axis', ...) end,
+
 		-- Direction - Up
 		U   = {
 			on  = function() Gamestate.current():on('axis', { y = -1 }) end,
@@ -42,28 +45,32 @@ _Control = {
 			},
 		},
 
-		-- Jump Button
-		J = {
+		-- (A) Attack Button
+		A = function() Gamestate.current():on('attack', 'slash') end,
+
+		-- (B) Jump Button
+		B = {
 			on  = function() Gamestate.current():on('jump') end,
 			off = function() Gamestate.current():off('jump') end,
 		},
 
-		-- PROTOTYPE --
-		-- Range Button
-		AL = function(...) Gamestate.current():on('axis', ...) end,
+		-- Reload Button
+		R1 = function() Gamestate.current():on('reload') end,
+		
+		-- Aim Button
 		R2 = {
-			on  = function() Gamestate.current():on('range')  end,
-			off = function() Gamestate.current():off('range') end,
+			on  = function() Gamestate.current():on('aim')  end,
+			off = function() Gamestate.current():off('aim') end,
 		},
-		-- PROTOTYPE --
+		-- Combo - Aim/Fire
+		['R2+A'] = function() Gamestate.current():on('attack', 'arrow') end,
 
-		-- Attack Button
-		['A'] = function() Gamestate.current():on('attack', 'slash')  end,
-		['B'] = {
+		-- Guard Button
+		['L1'] = {
 			on  = function() Gamestate.current():on('guard') end,
 			off = function() Gamestate.current():off('guard') end,
 		},
-		
+	
 		-- Combo - Roll
 		['D+J'] = function() Gamestate.current():on('roll') end,
 		

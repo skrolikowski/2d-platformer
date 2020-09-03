@@ -4,8 +4,9 @@ Util = {}
 
 -- vendor
 pprint = require 'vendor.pprint.pprint'
+JSON   = require 'vendor.json4lua.json'
 
--- controls
+-- Controls
 Control = require 'src.toolbox.controls.control'
 
 -- math
@@ -14,9 +15,11 @@ Dice    = require 'src.toolbox.math.dice'
 Segment = require 'src.toolbox.math.segment'
 Vec2    = require 'src.toolbox.math.vec2'
 
--- graphics
-Animator    = require 'src.toolbox.graphics.animator'
-Spritesheet = require 'src.toolbox.graphics.spritesheet'
+-- Animations
+AnimSheet = require 'src.toolbox.animations.sheet'
+Animation = require 'src.toolbox.animations.animation'
+Animator  = require 'src.toolbox.animations.animator'
+require 'src.toolbox.animations.config'
 
 -- quick lua implementation of "random" UUID
 -- https://gist.github.com/jrus/3197011

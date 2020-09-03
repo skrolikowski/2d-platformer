@@ -18,6 +18,22 @@ function Health:new(host, data)
 	host:hpMax(data.hp or host._hpMax)
 end
 
+-- Event: onBuff
+--
+function Health:onBuff(item)
+	if item.stat == 'health' then
+		self.host:increaseHp(item.value)
+	end
+end
+
+-- Event: onDebuff
+--
+function Health:onDebuff(item)
+	if item.stat == 'health' then
+		self.host:decreaseHp(item.value)
+	end
+end
+
 -- Draw
 --
 function Health:draw()

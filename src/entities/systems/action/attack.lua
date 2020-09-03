@@ -23,23 +23,17 @@ function Attack:update(dt)
 		if self:canAttack() then
 			self.host:dispatch('onAttack')
 			--
-			local path = Entities[self.host:atkType()]
+			local name = self.host:atkType()
+			local path = Entities[name]
 			local data = { source = self.host }
 
-			Timer.after(0.25, function()
-				self.hitbox = new(path, data)
-			end)
+			-- spawn attack
+			new(path, data)
 		end
 	end
 end
 
 ---- ---- ---- ----
-
-function Attack:offAttack()
-	if self.hitbox then
-		self.hitbox:destroy()
-	end
-end
 
 -- Event: onAnimationComplete
 --
@@ -63,6 +57,7 @@ function Attack:canAttack()
 	return not self.host.isAttacking and
 	       not self.host.isGuarding  and
 		   not self.host.isCrouching and
+		   not self.host.isRolling and
 	       self.host.tAtkCooldown == 0
 end
 

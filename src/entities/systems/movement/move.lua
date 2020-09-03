@@ -87,7 +87,9 @@ function Move:updateVY(dt)
 	-- local spdMax = self.host:spdMax()
 
 	-- apply axis
-	-- vy = self:byAxis(ay, vy)
+	if not self.host.sm:has('gravity') then
+		vy = self:byAxis(ay, vy)
+	end
 
 	-- apply force
 	vy = vy + fy * dt
@@ -104,7 +106,8 @@ end
 --
 function Move:canMoveX()
 	return self.host.isRolling or
-	      (not self.host.isAttacking and
+	      (not self.host.isLocked and
+	       not self.host.isAttacking and
 	       not self.host.isTakingHit and
 	       not self.host.isGuarding and
 	       not self.host.isReviving and

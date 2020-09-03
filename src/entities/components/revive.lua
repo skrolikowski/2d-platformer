@@ -24,7 +24,6 @@ end
 --
 function Revive:offRevive()
 	self.isReviving  = false
-	self.isReviveReq = false
 end
 
 -- Event: onAnimationComplete

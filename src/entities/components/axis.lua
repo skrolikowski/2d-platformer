@@ -11,8 +11,8 @@ function Axis:new(host, data)
 	
 	--
 	-- properties
-	self._axis   = Vec2()
-	self._facing = 1
+	self._axis   = data.axis or Vec2()
+	self._facing = data.facing or 1
 end
 
 -- New - via angle/magnitude
@@ -30,6 +30,13 @@ function Axis:onRqAxis(value)
 end
 
 ---- ---- ---- ----
+
+-- Get heading
+--
+function Axis:heading()
+	return self._axis:heading()
+end
+
 
 -- Get/set facing
 --
@@ -62,8 +69,10 @@ function Axis:ax(value)
 	self._axis.x = value
 
 	--
-	if self._axis.x ~= 0 then
-		self._facing = self._axis.x
+	if self._axis.x > 0 then
+		self._facing = 1
+	elseif self._axis.x < 0 then
+		self._facing = -1
 	end
 end
 

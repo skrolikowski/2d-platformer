@@ -91,6 +91,17 @@ function Transform:py(value)
 	self._pos.y = value
 end
 
+-- Get/set scale
+--
+function Transform:scale(value)
+	if value == nil then
+		return self._sx, self._sy
+	end
+
+	self._sx = value.x or self._sx
+	self._sy = value.y or self._sy
+end
+
 -- Get/set x-scale
 --
 function Transform:sx(value)

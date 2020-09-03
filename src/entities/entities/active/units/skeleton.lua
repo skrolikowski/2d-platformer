@@ -8,10 +8,10 @@ function Skeleton:new(data)
 	Base.new(self, _:merge({
 		name = 'skeleton',
 		systems = {
-			'animation',
 			'gravity',
 			'proximity',
 			--
+			animation = Animation['skeleton'],
 			health = { hp = 25 },
 			move   = { spd = 50 },
 			death  = { },

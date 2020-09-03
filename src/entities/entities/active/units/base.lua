@@ -68,8 +68,9 @@ function Unit:update(dt)
 	elseif self.isOnGround then
 		if     self.isRolling   then self:state('roll')
 		elseif self.isGuarding  then self:state('guard')
-		elseif self.isRanged    then self:state('aim')
+		elseif self.isReloading then self:state('reload')
 		elseif self.isAttacking then self:state(self:atkType())
+		elseif self.isAiming    then self:state('aim')
 		elseif self.isCrouching then self:state('crouch')
 		elseif self.isDashing   then self:state('dash')
 		elseif _.__abs(vx) > 1  then self:state('walk')
@@ -113,6 +114,8 @@ function Unit:state(value)
 
 	if self._state ~= value then
 		self._state = value
+		--
+		self:dispatch('onStateChange', value)
 	end
 end
 
